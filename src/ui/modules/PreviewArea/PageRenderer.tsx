@@ -4,7 +4,6 @@
 import React from 'react';
 import { useBuilder } from '../../../core/context/BuilderContext';
 import { ComponentFactory } from './ComponentFactory';
-import './PageRenderer.scss';
 
 // =============================================================================
 // COMPOSANT PAGE RENDERER
@@ -20,7 +19,7 @@ export const PageRenderer: React.FC = () => {
   const currentPage = currentPageId ? state.entities.pages?.[currentPageId] : null;
   const pageModuleIds = currentPageId ? state.relations.pageModules?.[currentPageId] || [] : [];
 
-  // Si pas de page ou pas de modules, ne rien afficher (ou un placeholder minimal si besoin)
+  // Si pas de page ou pas de modules, ne rien afficher
   if (!currentPage || pageModuleIds.length === 0) {
     return <div className="page-renderer" />;
   }

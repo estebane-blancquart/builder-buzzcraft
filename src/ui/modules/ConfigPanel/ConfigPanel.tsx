@@ -9,5 +9,6 @@ import './ConfigPanel.scss';
 // COMPOSANT PRINCIPAL (DÉLÉGATION AU CONTAINER)
 // =============================================================================
 export const ConfigPanel: React.FC = () => {
+  console.log('ConfigPanel racine - avant container');
   return <ConfigPanelContainer />;
 };

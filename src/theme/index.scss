@@ -1,436 +1,287 @@
 // =============================================================================
-// THEME - INDEX PRINCIPAL CSS VARIABLES PURE
+// THEME MODERNE - STYLE FIGMA/VSCODE 
 // =============================================================================
 
-// Import des variables CSS (seul import nécessaire)
-@import './variables.scss';
+:root {
+  // =============================================================================
+  // COULEURS PRINCIPALE - INSPIRATION FIGMA/VSCODE
+  // =============================================================================
+  
+  // === BACKGROUNDS LIGHT ===
+  --bg-app: #f5f5f5;
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafafa;
+  --bg-tertiary: #f0f0f0;
+  --bg-quaternary: #e8e8e8;
+  
+  // === TEXTE LIGHT ===
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-quaternary: #d1d5db;
+  
+  // === BORDERS LIGHT ===
+  --border-color: #e5e7eb;
+  --border-color-strong: #d1d5db;
+  --border-color-subtle: #f3f4f6;
+  
+  // === INTERACTIVE LIGHT ===
+  --hover-bg: #f8f9fa;
+  --active-bg: #f1f3f4;
+  --selected-bg: #e8f0ff;
+  
+  // === BRAND COLORS ===
+  --primary: #0066cc;
+  --primary-hover: #0052a3;
+  --primary-bg: #e8f0ff;
+  
+  --success: #00a653;
+  --success-bg: #e8f5e8;
+  
+  --warning: #ff7b00;
+  --warning-bg: #fff4e8;
+  
+  --error: #f24822;
+  --error-bg: #ffe8e8;
+  
+  // =============================================================================
+  // LAYOUT & DIMENSIONS
+  // =============================================================================
+  --explorer-width: 240px;
+  --config-width: 280px;
+  --header-height: 44px;
+  
+  // =============================================================================
+  // TYPOGRAPHY - STYLE FIGMA
+  // =============================================================================
+  --font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-lg: 14px;
+  --text-xl: 16px;
+  
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  // =============================================================================
+  // ESPACEMENTS - SYSTÈME 4PX
+  // =============================================================================
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  
+  // =============================================================================
+  // BORDURES & RAYONS - STYLE MODERNE
+  // =============================================================================
+  --border-width: 1px;
+  --border-radius: 6px;
+  --border-radius-sm: 4px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+  
+  // =============================================================================
+  // OMBRES SUBTILES - STYLE FIGMA
+  // =============================================================================
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.04);
+  
+  // =============================================================================
+  // TRANSITIONS FLUIDES
+  // =============================================================================
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  --transition: all var(--duration-normal) var(--ease);
+  --transition-fast: all var(--duration-fast) var(--ease);
+}
 
 // =============================================================================
-// STYLES GLOBAUX BUILDER (CSS VARIABLES)
+// DARK MODE - STYLE VSCODE
 // =============================================================================
+[data-theme="dark"] {
+  // === BACKGROUNDS DARK ===
+  --bg-app: #1e1e1e;
+  --bg-primary: #252526;
+  --bg-secondary: #2d2d30;
+  --bg-tertiary: #3c3c3c;
+  --bg-quaternary: #4a4a4a;
+  
+  // === TEXTE DARK ===
+  --text-primary: #cccccc;
+  --text-secondary: #9d9d9d;
+  --text-tertiary: #6a6a6a;
+  --text-quaternary: #4a4a4a;
+  
+  // === BORDERS DARK ===
+  --border-color: #3c3c3c;
+  --border-color-strong: #4a4a4a;
+  --border-color-subtle: #2d2d30;
+  
+  // === INTERACTIVE DARK ===
+  --hover-bg: #2a2d2e;
+  --active-bg: #37373d;
+  --selected-bg: #094771;
+  
+  // === BRAND COLORS AJUSTÉS ===
+  --primary: #0e639c;
+  --primary-hover: #1177bb;
+  --primary-bg: #094771;
+  
+  // === OMBRES DARK ===
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4);
+}
 
-// Grid principal (simple, déjà refactorisé)
+// =============================================================================
+// LAYOUT GLOBAL - GRID PROPRE
+// =============================================================================
 .builder-grid {
   display: grid;
   grid-template-columns: var(--explorer-width) 1fr var(--config-width);
   grid-template-rows: var(--header-height) 1fr;
   height: 100vh;
-  overflow: hidden;
   background: var(--bg-app);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
   
-  @supports (height: 100dvh) {
-    height: 100dvh;
-  }
-  
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: var(--header-height) auto 1fr;
-  }
-}
-
-// =============================================================================
-// ÉTATS DE SÉLECTION GLOBAUX
-// =============================================================================
-.selected-page {
-  border-color: var(--selection-page) !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 2px solid var(--selection-page);
-    border-radius: inherit;
-    pointer-events: none;
-    animation: selectionPulse 2s ease-in-out infinite;
-  }
-}
-
-.selected-module {
-  border-color: var(--selection-module) !important;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 2px solid var(--selection-module);
-    border-radius: inherit;
-    pointer-events: none;
-    animation: selectionPulse 2s ease-in-out infinite;
-  }
-}
-
-.selected-component {
-  border-color: var(--selection-component) !important;
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 2px solid var(--selection-component);
-    border-radius: inherit;
-    pointer-events: none;
-    animation: selectionPulse 2s ease-in-out infinite;
-  }
-}
-
-@keyframes selectionPulse {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.4; }
-}
-
-// =============================================================================
-// ÉTATS DRAG & DROP GLOBAUX
-// =============================================================================
-.drag-over {
-  border: 2px dashed var(--primary) !important;
-  border-radius: var(--radius-lg);
-  background: rgba(59, 130, 246, 0.05) !important;
-  transition: var(--transition-colors);
-  position: relative;
-  
-  &::after {
-    content: '+ Déposer ici';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary);
-    font-weight: var(--font-medium);
-    font-size: var(--text-sm);
+  // Chaque zone avec ses styles
+  .builder-header {
+    grid-column: 1 / -1;
     background: var(--bg-primary);
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius);
-    border: 1px solid var(--primary);
+    border-bottom: var(--border-width) solid var(--border-color);
+  }
+  
+  .explorer-panel {
+    background: var(--bg-secondary);
+    border-right: var(--border-width) solid var(--border-color);
+  }
+  
+  .preview-area {
+    background: var(--bg-app);
+  }
+  
+  .config-panel {
+    background: var(--bg-secondary);
+    border-left: var(--border-width) solid var(--border-color);
   }
 }
 
-.dragging {
-  opacity: 0.7;
-  transform: rotate(2deg) scale(1.02);
-  z-index: var(--z-modal);
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-  transition: none;
-}
-
 // =============================================================================
-// LOADING STATES GLOBAUX
+// COMPOSANTS GLOBAUX
 // =============================================================================
-.loading {
-  background: linear-gradient(90deg, 
-    var(--bg-secondary) 25%, 
-    var(--bg-tertiary) 50%, 
-    var(--bg-secondary) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
+// Boutons style Figma
+.btn {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: var(--transition);
   
-  &,
-  & * {
-    user-select: none;
+  &:hover {
+    background: var(--hover-bg);
+    border-color: var(--border-color-strong);
+  }
+  
+  &.btn-primary {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    
+    &:hover {
+      background: var(--primary-hover);
+    }
+  }
+}
+
+// Inputs style VSCode
+.input {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  transition: var(--transition);
+  
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-bg);
+  }
+}
+
+// Scrollbars style VSCode
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-tertiary) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  
+  &:hover {
+    background: var(--bg-quaternary);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE
+// =============================================================================
+@media (max-width: 768px) {
+  :root {
+    --explorer-width: 100%;
+    --config-width: 100%;
+    --header-height: 44px;
+  }
+  
+  .builder-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--header-height) auto 1fr auto;
   }
 }
 
 // =============================================================================
 // TRANSITIONS GLOBALES
 // =============================================================================
-.fade-enter {
-  opacity: 0;
-}
-
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity var(--duration-normal) var(--ease-out);
-}
-
-.fade-exit {
-  opacity: 1;
-}
-
-.fade-exit-active {
-  opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-in);
-}
-
-// =============================================================================
-// NOTIFICATIONS TOAST GLOBALES
-// =============================================================================
-.toast-container {
-  position: fixed;
-  top: var(--space-4);
-  right: var(--space-4);
-  z-index: var(--z-tooltip);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  pointer-events: none;
-  
-  @media (max-width: 767px) {
-    top: var(--space-2);
-    right: var(--space-2);
-    left: var(--space-2);
-  }
-}
-
-.toast {
-  background: var(--bg-card);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-3) var(--space-4);
-  pointer-events: auto;
-  min-width: 300px;
-  border-left: 4px solid;
-  animation: scaleIn var(--duration-normal) var(--ease-bounce);
-  
-  &.toast-success {
-    border-left-color: var(--success);
-    background: var(--success-light);
-  }
-  
-  &.toast-error {
-    border-left-color: var(--error);
-    background: var(--error-light);
-  }
-  
-  &.toast-warning {
-    border-left-color: var(--warning);
-    background: var(--warning-light);
-  }
-  
-  &.toast-info {
-    border-left-color: var(--info);
-    background: var(--info-light);
-  }
-  
-  @media (max-width: 767px) {
-    min-width: auto;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-// =============================================================================
-// LOADING SPINNER GLOBAL
-// =============================================================================
-.spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-// =============================================================================
-// TOOLTIPS GLOBAUX
-// =============================================================================
-.tooltip {
-  position: relative;
-  
-  &::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: var(--space-1) var(--space-2);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    border-radius: var(--radius);
-    font-size: var(--text-xs);
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: var(--transition-opacity);
-    z-index: var(--z-tooltip);
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 4px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: var(--transition-opacity);
-  }
-  
-  &:hover::before,
-  &:hover::after {
-    opacity: 1;
-  }
-}
-
-// =============================================================================
-// UTILITIES HELPER CLASSES
-// =============================================================================
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-.not-selectable {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// =============================================================================
-// FOCUS MANAGEMENT GLOBAL
-// =============================================================================
-.js-focus-visible :focus:not(.focus-visible) {
-  outline: none;
-}
-
-.focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-// =============================================================================
-// REDUCED MOTION GLOBAL
-// =============================================================================
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  // Garder les transitions essentielles
-  :focus-visible {
-    transition: none !important;
-  }
-}
-
-// =============================================================================
-// HIGH CONTRAST MODE
-// =============================================================================
-@media (prefers-contrast: high) {
-  .selected-page,
-  .selected-module,
-  .selected-component {
-    border-width: 3px !important;
-  }
-  
-  .drag-over {
-    border-width: 3px !important;
-  }
-  
-  .tooltip::before {
-    border: 1px solid white;
-  }
-}
-
-:root {
-  --primary: #3b82f6;
-  --primary-dark: #2563eb;
-  --primary-light: #dbeafe;
-  --secondary: #64748b;
-  --secondary-dark: #475569;
-  --secondary-light: #f1f5f9;
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --error: #ef4444;
-  --error-light: #fee2e2;
-  --info: #06b6d4;
-  --info-light: #cffafe;
-  --bg-primary: #fff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --bg-dark: #0f172a;
-  --bg-card: #fff;
-  --bg-app: #f8fafc;
-  --border-color: #e0e0e0;
-  --explorer-width: 260px;
-  --config-width: 320px;
-  --header-height: 56px;
-  --selection-page: #3b82f6;
-  --selection-module: #10b981;
-  --selection-component: #f59e0b;
-  --radius: 8px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-  --z-modal: 1000;
-  --z-tooltip: 1100;
-  --font-medium: 500;
-  --text-sm: 0.95rem;
-  --text-xs: 0.8rem;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --duration-normal: 0.2s;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in: cubic-bezier(0.55, 0, 0.55, 0.2);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  --transition-colors: background 0.2s, color 0.2s, border 0.2s;
-}
-
-body {
-  background: var(--bg-primary);
-  color: var(--secondary);
-  min-height: 100vh;
+* {
+  transition: var(--transition-fast);
 }

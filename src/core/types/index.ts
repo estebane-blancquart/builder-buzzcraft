@@ -29,6 +29,8 @@ export type {
 export type {
   Selection,
   SelectionUpdate,
+  SelectionInfo,
+  ConfigPanelProps,
   ViewportSettings,
   DeviceDimensions,
   EditingState,

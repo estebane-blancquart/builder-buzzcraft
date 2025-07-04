@@ -2,7 +2,7 @@
 // CORE TYPES - INTERFACE UTILISATEUR
 // =============================================================================
 
-import type { DeviceType } from './entities';
+import type { DeviceType, Component, Module, Page, ComponentType } from './entities';
 
 // =============================================================================
 // SYSTÈME DE SÉLECTION
@@ -19,6 +19,28 @@ export interface SelectionUpdate {
   pageId?: string | null;
   moduleId?: string | null;
   componentId?: string | null;
+}
+
+// =============================================================================
+// CONFIG PANEL - TYPES SPÉCIFIQUES
+// =============================================================================
+
+export interface SelectionInfo {
+  readonly type: 'none' | 'page' | 'module' | 'component';
+  readonly label: string;
+  readonly icon: string;
+  readonly elementName: string;
+  readonly availableTabs: readonly string[];
+}
+
+export interface ConfigPanelProps {
+  readonly selectionInfo: SelectionInfo;
+  readonly selectedEntity: Component<ComponentType> | Module | Page | null;
+  readonly onUpdateComponent: (componentId: string, updates: any) => void;
+  readonly onUpdateComponentStyle: (componentId: string, styleUpdates: any) => void;
+  readonly onUpdateComponentProps: (componentId: string, propUpdates: any) => void;
+  readonly onUpdateModuleLayout: (moduleId: string, layoutUpdates: any) => void;
+  readonly onUpdateModuleStyle: (moduleId: string, styleUpdates: any) => void;
 }
 
 // =============================================================================

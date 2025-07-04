@@ -1,26 +1,26 @@
 // =============================================================================
-// CONFIG PANEL CONTAINER - LOGIQUE DE CONNEXION AU STORE
+// CONFIG PANEL CONTAINER - LOGIQUE DE CONNEXION AU STORE + RENDU
 // =============================================================================
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useBuilder } from '../../../../core/context/BuilderContext';
 import { useSelection } from '../../../../core/hooks';
-import { componentActions, moduleActions } from '../../../../core/store/actions';
-import { ConfigPanel, type SelectionInfo, type ConfigPanelProps } from '../components/ConfigPanel';
-import type { Page, Module, Component } from '../../../../core/types';
+import type { SelectionInfo } from '../../../../core/types';
 
 // =============================================================================
-// CONTAINER (LOGIQUE DE CONNEXION)
+// CONTAINER (LOGIQUE + RENDU)
 // =============================================================================
+
 export const ConfigPanelContainer: React.FC = () => {
-  const { state, dispatch } = useBuilder();
+  const { state } = useBuilder(); // ✅ dispatch supprimé
   const { state: selection } = useSelection();
 
   // =============================================================================
   // DONNÉES SÉLECTÉES DU STORE
   // =============================================================================
+
   const selectionInfo = useMemo((): SelectionInfo => {
     const { pageId, moduleId, componentId } = selection;
-    
+
     // Aucune sélection
     if (!pageId) {
       return {
@@ -31,7 +31,7 @@ export const ConfigPanelContainer: React.FC = () => {
         availableTabs: []
       };
     }
-    
+
     // Composant sélectionné
     if (componentId) {
       const component = state.entities.components[componentId];
@@ -41,11 +41,11 @@ export const ConfigPanelContainer: React.FC = () => {
           label: 'Composant',
           icon: '📝',
           elementName: component.name,
-          availableTabs: ['Layout', 'Style', 'Contenu']
+          availableTabs: ['contenu', 'position', 'style']
         };
       }
     }
-    
+
     // Module sélectionné
     if (moduleId) {
       const module = state.entities.modules[moduleId];
@@ -55,11 +55,11 @@ export const ConfigPanelContainer: React.FC = () => {
           label: 'Module',
           icon: '📋',
           elementName: module.name,
-          availableTabs: ['Layout', 'Style']
+          availableTabs: ['position', 'style']
         };
       }
     }
-    
+
     // Page sélectionnée
     const page = state.entities.pages[pageId];
     if (page) {
@@ -68,10 +68,10 @@ export const ConfigPanelContainer: React.FC = () => {
         label: 'Page',
         icon: '📄',
         elementName: page.name,
-        availableTabs: ['Style']
+        availableTabs: ['style']
       };
     }
-    
+
     return {
       type: 'none',
       label: 'Configuration',
@@ -81,112 +81,77 @@ export const ConfigPanelContainer: React.FC = () => {
     };
   }, [state, selection]);
 
-  const selectedEntity = useMemo((): Page | Module | Component | null => {
+  const selectedEntity = useMemo(() => {
     const { pageId, moduleId, componentId } = selection;
-    
+
     if (componentId) {
       return state.entities.components[componentId] || null;
     }
-    
+
     if (moduleId) {
       return state.entities.modules[moduleId] || null;
     }
-    
+
     if (pageId) {
       return state.entities.pages[pageId] || null;
     }
-    
+
     return null;
   }, [state, selection]);
 
   // =============================================================================
-  // CALLBACKS CONNECTÉS AU STORE
+  // RENDU CONDITIONNEL (AUCUNE SÉLECTION)
   // =============================================================================
-  const handleUpdateComponent = useCallback((componentId: string, updates: any) => {
-    dispatch(componentActions.update(componentId, {
-      ...updates,
-      updatedAt: Date.now()
-    }));
-  }, [dispatch]);
-
-  const handleUpdateComponentStyle = useCallback((componentId: string, styleUpdates: any) => {
-    const component = state.entities.components[componentId];
-    if (!component) return;
-
-    dispatch(componentActions.update(componentId, {
-      styles: {
-        ...component.styles,
-        ...styleUpdates
-      },
-      updatedAt: Date.now()
-    }));
-  }, [dispatch, state.entities.components]);
-
-  const handleUpdateComponentProps = useCallback((componentId: string, propUpdates: any) => {
-    const component = state.entities.components[componentId];
-    if (!component) return;
-
-    dispatch(componentActions.update(componentId, {
-      props: {
-        ...component.props,
-        ...propUpdates
-      },
-      updatedAt: Date.now()
-    }));
-  }, [dispatch, state.entities.components]);
-
-  const handleUpdateModule = useCallback((moduleId: string, updates: any) => {
-    dispatch(moduleActions.update(moduleId, {
-      ...updates,
-      updatedAt: Date.now()
-    }));
-  }, [dispatch]);
-
-  const handleUpdateModuleLayout = useCallback((moduleId: string, layoutUpdates: any) => {
-    const module = state.entities.modules[moduleId];
-    if (!module) return;
-
-    dispatch(moduleActions.update(moduleId, {
-      layout: {
-        ...module.layout,
-        ...layoutUpdates
-      },
-      updatedAt: Date.now()
-    }));
-  }, [dispatch, state.entities.modules]);
-
-  const handleUpdateModuleStyle = useCallback((moduleId: string, styleUpdates: any) => {
-    const module = state.entities.modules[moduleId];
-    if (!module) return;
-
-    dispatch(moduleActions.update(moduleId, {
-      styles: {
-        ...module.styles,
-        ...styleUpdates
-      },
-      updatedAt: Date.now()
-    }));
-  }, [dispatch, state.entities.modules]);
+  if (selectionInfo.type === 'none') {
+    return (
+      <div className="config-panel empty" style={{ padding: '20px', textAlign: 'center' }}>
+        <div className="empty-state">
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>{selectionInfo.icon}</div>
+          <h4>{selectionInfo.label}</h4>
+          <p>Sélectionnez un élément pour voir ses propriétés</p>
+        </div>
+      </div>
+    );
+  }
 
   // =============================================================================
-  // PROPS MAPPING (STORE → COMPOSANT PUR)
+  // RENDU AVEC SÉLECTION
   // =============================================================================
-  const configPanelProps: ConfigPanelProps = {
-    // Data pure
-    selectionInfo,
-    selectedEntity,
-    
-    // Callbacks découplés
-    onUpdateComponent: handleUpdateComponent,
-    onUpdateComponentStyle: handleUpdateComponentStyle,
-    onUpdateComponentProps: handleUpdateComponentProps,
-    onUpdateModule: handleUpdateModule,
-    onUpdateModuleLayout: handleUpdateModuleLayout,
-    onUpdateModuleStyle: handleUpdateModuleStyle,
-  };
+  return (
+    <div className="config-panel" style={{ padding: '20px' }}>
+      {/* Header avec infos sélection */}
+      <div style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '24px' }}>{selectionInfo.icon}</span>
+          <div>
+            <h4 style={{ margin: 0 }}>{selectionInfo.label}</h4>
+            <span style={{ color: '#666', fontSize: '14px' }}>{selectionInfo.elementName}</span>
+          </div>
+        </div>
+      </div>
 
-  // =============================================================================
-  // RENDER (DÉLÉGATION AU COMPOSANT PUR)
-  // =============================================================================
-  return <ConfigPanel {...configPanelProps} />;
+      {/* Onglets disponibles */}
+      <div style={{ marginBottom: '20px' }}>
+        <h5>Onglets disponibles :</h5>
+        {selectionInfo.availableTabs.map(tab => (
+          <span key={tab} style={{
+            display: 'inline-block',
+            margin: '4px',
+            padding: '8px 12px',
+            background: '#f0f0f0',
+            borderRadius: '4px',
+            fontSize: '14px'
+          }}>
+            {tab}
+          </span>
+        ))}
+      </div>
+
+      {/* Info debug */}
+      <div style={{ background: '#f9f9f9', padding: '12px', borderRadius: '4px', fontSize: '14px' }}>
+        <div><strong>Type:</strong> {selectionInfo.type}</div>
+        <div><strong>Entity:</strong> {selectedEntity ? 'Présent' : 'Null'}</div>
+      </div>
+    </div>
+  );
 };
