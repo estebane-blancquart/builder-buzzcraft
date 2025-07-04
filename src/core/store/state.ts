@@ -61,6 +61,15 @@ export const initialState: NormalizedBuilderState = {
       snapToGrid: true,
     },
     
+    // Preview settings (NOUVEAU)
+    preview: {
+      activeDevice: 'desktop',
+      zoom: 1,
+      isFullscreen: false,
+      showGrid: false,
+      isLoading: false
+    },
+    
     // Sélection
     selection: {
       pageId: null,

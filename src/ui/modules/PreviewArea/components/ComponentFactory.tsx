@@ -2,7 +2,7 @@
 // COMPONENT FACTORY - VERSION FINALE AVEC OVERRIDE CSS
 // =============================================================================
 import React, { JSX } from 'react';
-import { Component, TitleProps, TextProps, ImageProps, ButtonProps, ListProps, VideoProps } from '../../../core/types';
+import { Component, TitleProps, TextProps, ImageProps, ButtonProps, ListProps, VideoProps } from '../../../../core/types';
 
 // =============================================================================
 // INTERFACE

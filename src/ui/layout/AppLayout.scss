@@ -1,17 +1,16 @@
 // =============================================================================
 // APP LAYOUT - VERSION PROPRE AVEC DESIGN SYSTEM
 // =============================================================================
-
 .builder-grid {
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
   grid-template-rows: var(--header-height) 1fr;
   height: 100vh;
-  background: var(--bg-app);
+  background: #ffffff !important; // Force le blanc au démarrage
   font-family: var(--font-sans);
   color: var(--text-primary);
   overflow: hidden;
-  
+ 
   // Support viewport moderne
   @supports (height: 100dvh) {
     height: 100dvh;
@@ -21,37 +20,36 @@
 // =============================================================================
 // ZONES DU LAYOUT
 // =============================================================================
-
 .builder-header {
   grid-column: 1 / -1;
   grid-row: 1;
   z-index: var(--z-sticky);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); // Force border visible
 }
 
 .explorer-panel {
   grid-column: 1;
   grid-row: 2;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border-primary);
+  background: #ffffff !important; // Force le blanc
+  border-right: 1px solid #e5e7eb !important; // Force border visible
   overflow-y: auto;
-  
+ 
   // Scrollbar moderne
   scrollbar-width: thin;
   scrollbar-color: var(--color-neutral-300) transparent;
-  
+ 
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+ 
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+ 
   &::-webkit-scrollbar-thumb {
     background: var(--color-neutral-300);
     border-radius: var(--radius-full);
-    
+   
     &:hover {
       background: var(--color-neutral-400);
     }
@@ -61,7 +59,7 @@
 .preview-area {
   grid-column: 2;
   grid-row: 2;
-  background: var(--bg-app);
+  background: #f8f9fa !important; // Force le gris clair
   overflow: hidden;
   position: relative;
 }
@@ -69,26 +67,26 @@
 .config-panel {
   grid-column: 3;
   grid-row: 2;
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border-primary);
+  background: #ffffff !important; // Force le blanc
+  border-left: 1px solid #e5e7eb !important; // Force border visible
   overflow-y: auto;
-  
+ 
   // Même scrollbar que explorer
   scrollbar-width: thin;
   scrollbar-color: var(--color-neutral-300) transparent;
-  
+ 
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+ 
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+ 
   &::-webkit-scrollbar-thumb {
     background: var(--color-neutral-300);
     border-radius: var(--radius-full);
-    
+   
     &:hover {
       background: var(--color-neutral-400);
     }
@@ -98,7 +96,6 @@
 // =============================================================================
 // RESPONSIVE DESIGN
 // =============================================================================
-
 @media (max-width: 1024px) {
   .builder-grid {
     grid-template-columns: 240px 1fr 280px;
@@ -109,7 +106,7 @@
   .builder-grid {
     grid-template-columns: 1fr;
     grid-template-rows: var(--header-height) 1fr;
-    
+   
     .explorer-panel,
     .config-panel {
       position: fixed;
@@ -122,15 +119,15 @@
       transition: transform var(--duration-normal) var(--ease-in-out);
       grid-column: 1;
       grid-row: 2;
-      
+     
       &.is-open {
         transform: translateX(0);
       }
     }
-    
+   
     .config-panel {
       transform: translateX(100%);
-      
+     
       &.is-open {
         transform: translateX(0);
       }
@@ -141,7 +138,6 @@
 // =============================================================================
 // ANIMATIONS & TRANSITIONS
 // =============================================================================
-
 .builder-grid > * {
   transition: var(--transition-all);
 }
@@ -163,16 +159,42 @@
 }
 
 // =============================================================================
+// MODE SOMBRE
+// =============================================================================
+[data-theme="dark"] {
+  .builder-grid {
+    background: #0f172a !important;
+  }
+  
+  .builder-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .explorer-panel {
+    background: #1e293b !important;
+    border-right-color: #334155 !important;
+  }
+  
+  .preview-area {
+    background: #1e293b !important;
+  }
+  
+  .config-panel {
+    background: #1e293b !important;
+    border-left-color: #334155 !important;
+  }
+}
+
+// =============================================================================
 // REDUCED MOTION
 // =============================================================================
-
 @media (prefers-reduced-motion: reduce) {
   .builder-grid,
   .builder-grid > * {
     animation: none;
     transition: none;
   }
-  
+ 
   .explorer-panel,
   .config-panel {
     transition: none;

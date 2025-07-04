@@ -62,6 +62,15 @@ export interface DeviceDimensions {
   name: string;
 }
 
+// État preview global
+export interface PreviewState {
+  activeDevice: DeviceType;
+  zoom: number;
+  isFullscreen: boolean;
+  showGrid: boolean;
+  isLoading: boolean;
+}
+
 // =============================================================================
 // ÉDITION INLINE
 // =============================================================================
@@ -161,6 +170,9 @@ export interface UIState {
   // Device et viewport
   activeDevice: DeviceType;
   viewport: ViewportSettings;
+  
+  // Preview settings (NOUVEAU)
+  preview: PreviewState;
   
   // Sélection actuelle
   selection: Selection;

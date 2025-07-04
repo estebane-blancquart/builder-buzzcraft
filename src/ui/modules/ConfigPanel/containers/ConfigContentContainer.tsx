@@ -2,33 +2,11 @@
 // CONFIG CONTENT CONTAINER - LOGIQUE DE CONNEXION
 // =============================================================================
 import React, { useCallback } from 'react';
+import { useBuilder } from '../../../../core/context/BuilderContext';
+import { Component } from '../../../../core/types';
 import { ContentForm } from '../components/ContentForm';
 import { StyleForm } from '../components/StyleForm';
 import { LayoutForm } from '../components/LayoutForm';
-
-// =============================================================================
-// DONNÉES MOCK
-// =============================================================================
-const mockEntities = {
-  components: {
-    'comp-1': {
-      id: 'comp-1',
-      name: 'Main Heading',
-      type: 'title',
-      props: { text: 'Bienvenue sur BuzzCraft', level: 1 },
-      styles: { color: '#2d3748', fontSize: '32px' },
-      layout: { span: 1, position: 0 }
-    }
-  } as Record<string, any>,
-  modules: {
-    'module-1': {
-      id: 'module-1',
-      name: 'Hero Section',
-      layout: { desktop: 1, tablet: 1, mobile: 1 },
-      styles: { background: '#f8f9fa', padding: '20px' }
-    }
-  } as Record<string, any>
-};
 
 // =============================================================================
 // INTERFACES
@@ -48,12 +26,19 @@ export const ConfigContentContainer: React.FC<ConfigContentContainerProps> = ({
   activeTab
 }) => {
   // =============================================================================
+  // HOOKS
+  // =============================================================================
+  const { state } = useBuilder();
+
+  // =============================================================================
   // SÉLECTEURS DE DONNÉES
   // =============================================================================
   const entity = selectionType === 'component' 
-    ? mockEntities.components[selectedId]
+    ? state.entities.components?.[selectedId]
     : selectionType === 'module'
-    ? mockEntities.modules[selectedId]
+    ? state.entities.modules?.[selectedId]
+    : selectionType === 'page'
+    ? state.entities.pages?.[selectedId]
     : null;
 
   // =============================================================================
@@ -85,18 +70,10 @@ export const ConfigContentContainer: React.FC<ConfigContentContainerProps> = ({
   }, []);
 
   // =============================================================================
-  // GUARD CLAUSE
+  // GUARD CLAUSE - ZONE VIDE SI PAS D'ENTITÉ
   // =============================================================================
   if (!entity) {
-    return (
-      <div className="empty-state">
-        <div className="empty-icon">🎯</div>
-        <div className="empty-title">Aucune sélection</div>
-        <div className="empty-description">
-          Sélectionnez un élément dans l'explorer ou la zone de prévisualisation pour voir ses propriétés
-        </div>
-      </div>
-    );
+    return <div className="empty-state" />;
   }
 
   // =============================================================================
@@ -104,21 +81,21 @@ export const ConfigContentContainer: React.FC<ConfigContentContainerProps> = ({
   // =============================================================================
   switch (activeTab) {
     case 'content':
-      if (selectionType === 'component') {
+      if (selectionType === 'component' && entity) {
         return (
           <ContentForm
-            component={entity}
+            component={entity as Component}
             onUpdateComponentProps={handleUpdateComponentProps}
             onUpdateComponentStyle={handleUpdateComponentStyle}
           />
         );
       }
-      return null;
+      return <div className="empty-state" />;
 
     case 'style':
       return (
         <StyleForm
-          entity={entity}
+          entity={entity as any}
           entityType={selectionType as 'component' | 'module'}
           onUpdateComponentStyle={handleUpdateComponentStyle}
           onUpdateModuleStyle={handleUpdateModuleStyle}
@@ -128,7 +105,7 @@ export const ConfigContentContainer: React.FC<ConfigContentContainerProps> = ({
     case 'layout':
       return (
         <LayoutForm
-          entity={entity}
+          entity={entity as any}
           entityType={selectionType as 'component' | 'module'}
           onUpdateComponent={handleUpdateComponent}
           onUpdateComponentStyle={handleUpdateComponentStyle}
@@ -138,6 +115,6 @@ export const ConfigContentContainer: React.FC<ConfigContentContainerProps> = ({
       );
 
     default:
-      return null;
+      return <div className="empty-state" />;
   }
 };

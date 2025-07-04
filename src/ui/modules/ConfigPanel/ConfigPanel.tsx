@@ -2,41 +2,12 @@
 // CONFIG PANEL - ORCHESTRATEUR PRINCIPAL AVEC ARCHITECTURE
 // =============================================================================
 import React, { useState, useCallback, useMemo } from 'react';
+import { useBuilder } from '../../../core/context/BuilderContext';
 import { ConfigHeader } from './components/ConfigHeader';
 import { ConfigTabs } from './components/ConfigTabs';
 import { ConfigContentContainer } from './containers/ConfigContentContainer';
 import { ConfigActionsContainer } from './containers/ConfigActionsContainer';
 import './ConfigPanel.scss';
-
-// =============================================================================
-// DONNÉES MOCK (SÉLECTION SIMULÉE)
-// =============================================================================
-const mockSelection = {
-  pageId: 'page-1',
-  moduleId: 'module-1',
-  componentId: 'comp-1'
-};
-
-const mockEntities = {
-  pages: {
-    'page-1': {
-      id: 'page-1',
-      name: 'Home'
-    }
-  },
-  modules: {
-    'module-1': {
-      id: 'module-1',
-      name: 'Hero Section'
-    }
-  },
-  components: {
-    'comp-1': {
-      id: 'comp-1',
-      name: 'Main Heading'
-    }
-  }
-} as Record<string, Record<string, any>>;
 
 // =============================================================================
 // CONFIG PANEL (ORCHESTRATEUR)
@@ -45,7 +16,8 @@ export const ConfigPanel: React.FC = () => {
   // =============================================================================
   // ÉTAT LOCAL UI
   // =============================================================================
-  const [selection] = useState(mockSelection);
+  const { state } = useBuilder();
+  const selection = state.ui.selection;
   const [activeTab, setActiveTab] = useState<string>('content');
 
   // =============================================================================
@@ -56,7 +28,7 @@ export const ConfigPanel: React.FC = () => {
 
     // Composant sélectionné
     if (componentId && pageId) {
-      const component = mockEntities.components?.[componentId];
+      const component = state.entities.components?.[componentId];
       if (component) {
         return {
           type: 'component' as const,
@@ -71,7 +43,7 @@ export const ConfigPanel: React.FC = () => {
 
     // Module sélectionné
     if (moduleId && pageId) {
-      const module = mockEntities.modules?.[moduleId];
+      const module = state.entities.modules?.[moduleId];
       if (module) {
         return {
           type: 'module' as const,
@@ -86,7 +58,7 @@ export const ConfigPanel: React.FC = () => {
 
     // Page sélectionnée
     if (pageId) {
-      const page = mockEntities.pages?.[pageId];
+      const page = state.entities.pages?.[pageId];
       if (page) {
         return {
           type: 'page' as const,
@@ -107,7 +79,7 @@ export const ConfigPanel: React.FC = () => {
       availableTabs: [] as string[],
       selectedId: ''
     };
-  }, [selection]);
+  }, [selection, state.entities]);
 
   // =============================================================================
   // HANDLERS DE NAVIGATION
