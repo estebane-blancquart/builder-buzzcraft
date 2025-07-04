@@ -1,0 +1,673 @@
+// =============================================================================
+// EXPLORER PANEL - STYLES FIGMA/VSCODE AVEC BOUTONS UNIFORMES
+// =============================================================================
+
+.explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-neutral-50);
+  border-right: 1px solid var(--color-neutral-200);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+  
+  // VSCode-like scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-300);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--color-neutral-400);
+    }
+  }
+}
+
+// =============================================================================
+// HEADER (STYLE FIGMA)
+// =============================================================================
+
+.explorer__header {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--color-neutral-100);
+  border-bottom: 1px solid var(--color-neutral-200);
+  
+  .explorer__title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-neutral-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.8;
+    }
+  }
+}
+
+// =============================================================================
+// SEARCH (STYLE VSCODE)
+// =============================================================================
+
+.explorer__search {
+  padding: 8px 12px;
+  background: var(--color-neutral-50);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  background: var(--color-neutral-0);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 3px;
+  transition: border-color 0.1s ease;
+  
+  &:focus-within {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 1px var(--color-primary-500);
+  }
+  
+  svg {
+    position: absolute;
+    left: 6px;
+    width: 12px;
+    height: 12px;
+    color: var(--color-neutral-500);
+    pointer-events: none;
+  }
+  
+  &__input {
+    flex: 1;
+    height: 100%;
+    padding: 0 6px 0 24px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    color: var(--color-neutral-800);
+    
+    &::placeholder {
+      color: var(--color-neutral-500);
+    }
+  }
+  
+  &__clear {
+    position: absolute;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: none;
+    border: none;
+    border-radius: 2px;
+    color: var(--color-neutral-500);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    
+    &:hover {
+      background: var(--color-neutral-200);
+      color: var(--color-neutral-700);
+    }
+    
+    svg {
+      position: static;
+      width: 10px;
+      height: 10px;
+    }
+  }
+}
+
+// =============================================================================
+// CONTENT & TREE
+// =============================================================================
+
+.explorer__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.tree {
+  min-height: 100%;
+}
+
+// =============================================================================
+// TREE NODES (STYLE VSCODE)
+// =============================================================================
+
+.tree-node {
+  position: relative;
+  margin-bottom: 0;
+  
+  // Add spacing between pages
+  &--page {
+    margin-bottom: 6px;
+    
+    // Add subtle separator line between pages
+    &:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: -3px;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--color-neutral-200) 20%, 
+        var(--color-neutral-200) 80%, 
+        transparent 100%
+      );
+      opacity: 0.4;
+    }
+  }
+  
+  &--module {
+    margin-bottom: 1px;
+  }
+  
+  &--component {
+    margin-bottom: 0;
+  }
+  
+  &__content {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 8px 0 8px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.1s ease;
+    
+    &:hover {
+      background: var(--color-neutral-100);
+    }
+    
+    // Selection states (Figma-like)
+    &.tree-node--selected {
+      background: var(--color-primary-100);
+      color: var(--color-primary-800);
+    }
+  }
+  
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    background: none;
+    border: none;
+    color: var(--color-neutral-500);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.1s ease;
+    
+    &:hover:not(:disabled) {
+      background: var(--color-neutral-200);
+      color: var(--color-neutral-700);
+    }
+    
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    
+    &--expanded {
+      transform: rotate(90deg);
+    }
+    
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    color: var(--color-neutral-600);
+    
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  &__label {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    margin-right: 8px;
+  }
+  
+  &__indent {
+    width: 12px;
+    height: 100%;
+  }
+}
+
+// =============================================================================
+// ENHANCED TREE HIERARCHY
+// =============================================================================
+
+.tree-children {
+  position: relative;
+  margin-bottom: 4px;
+  
+  // Connection lines (more visible)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 4px;
+    width: 1px;
+    background: var(--color-neutral-300);
+    opacity: 0.8;
+  }
+  
+  .tree-node {
+    &--module {
+      .tree-node__content {
+        padding-left: 28px;
+        
+        &:hover {
+          background: var(--color-success-50);
+        }
+        
+        &.tree-node--selected {
+          background: var(--color-success-100);
+          color: var(--color-success-800);
+        }
+      }
+    }
+    
+    &--component {
+      .tree-node__content {
+        padding-left: 48px;
+        
+        &:hover {
+          background: var(--color-warning-50);
+        }
+        
+        &.tree-node--selected {
+          background: var(--color-warning-100);
+          color: var(--color-warning-800);
+        }
+      }
+      
+      .tree-node__icon {
+        color: var(--color-neutral-500);
+        
+        svg {
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// BOUTONS ADD UNIFORMES (TOUS IDENTIQUES)
+// =============================================================================
+
+.add-item {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+  padding-right: 8px;
+  
+  &--page {
+    justify-content: flex-end; // Aligné à droite comme les autres
+    margin: 8px 0;
+    padding-right: 8px; // Même padding que les autres
+  }
+  
+  &--module {
+    padding-right: 8px;
+    margin: 0 0 6px 0; // Space after module section
+  }
+  
+  &--component {
+    padding-right: 8px;
+    margin: 0 0 4px 0; // Space after component section
+  }
+}
+
+.add-item__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100px; // TOUS IDENTIQUES - même largeur
+  height: 16px; // TOUS IDENTIQUES - même hauteur
+  padding: 0 4px;
+  background: transparent; // TOUS IDENTIQUES - même background
+  border: 1px dashed var(--color-neutral-300); // TOUS IDENTIQUES - même bordure
+  border-radius: 2px;
+  color: var(--color-neutral-500); // TOUS IDENTIQUES - même couleur
+  font-size: 9px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  opacity: 0.7; // TOUS IDENTIQUES - même opacité
+  
+  &:hover {
+    background: var(--color-neutral-100); // TOUS IDENTIQUES - même hover
+    border-color: var(--color-neutral-500);
+    color: var(--color-neutral-700);
+    opacity: 1;
+  }
+  
+  svg {
+    width: 9px;
+    height: 9px;
+    transition: none;
+    flex-shrink: 0;
+  }
+  
+  span {
+    font-size: inherit;
+    font-weight: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// =============================================================================
+// TREE ACTIONS (SIMPLIFIED)
+// =============================================================================
+
+.tree-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: var(--color-neutral-200);
+  border: none;
+  border-radius: 2px;
+  color: var(--color-neutral-600);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  
+  &:hover {
+    background: var(--color-neutral-300);
+    color: var(--color-neutral-800);
+  }
+  
+  &--delete:hover {
+    background: #FFEBEE;
+    color: #D32F2F;
+  }
+  
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+// =============================================================================
+// EMPTY STATES
+// =============================================================================
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  color: var(--color-neutral-500);
+  
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 8px;
+    opacity: 0.6;
+  }
+  
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+}
+
+.empty-list {
+  padding: 12px 16px;
+  text-align: center;
+  
+  .empty-text {
+    font-size: 11px;
+    color: var(--color-neutral-400);
+    font-style: italic;
+  }
+}
+
+// =============================================================================
+// DARK MODE (VSCODE DARK THEME)
+// =============================================================================
+
+[data-theme="dark"] {
+  .explorer {
+    background: #1E1E1E;
+    border-right-color: #3C3C3C;
+    color: #CCCCCC;
+    
+    &::-webkit-scrollbar-thumb {
+      background: #424242;
+      
+      &:hover {
+        background: #4A4A4A;
+      }
+    }
+  }
+  
+  .explorer__header {
+    background: #252526;
+    border-bottom-color: #3C3C3C;
+    
+    .explorer__title {
+      color: #CCCCCC;
+    }
+  }
+  
+  .explorer__search {
+    background: #1E1E1E;
+    border-bottom-color: #3C3C3C;
+  }
+  
+  .search-field {
+    background: #3C3C3C;
+    border-color: #464647;
+    
+    &:focus-within {
+      border-color: #007ACC;
+      box-shadow: 0 0 0 1px #007ACC;
+    }
+    
+    svg {
+      color: #858585;
+    }
+    
+    &__input {
+      color: #CCCCCC;
+      
+      &::placeholder {
+        color: #858585;
+      }
+    }
+    
+    &__clear {
+      color: #858585;
+      
+      &:hover {
+        background: #464647;
+        color: #CCCCCC;
+      }
+    }
+  }
+  
+  .tree-node {
+    &__content {
+      &:hover {
+        background: #2A2D2E;
+      }
+      
+      &.tree-node--selected {
+        background: #094771;
+        color: #FFFFFF;
+      }
+    }
+    
+    &__toggle {
+      color: #858585;
+      
+      &:hover:not(:disabled) {
+        background: #464647;
+        color: #CCCCCC;
+      }
+    }
+    
+    &__icon {
+      color: #CCCCCC;
+    }
+  }
+  
+  .tree-children::before {
+    background: #424242;
+  }
+  
+  .tree-action {
+    color: #858585;
+    
+    &:hover {
+      background: #464647;
+      color: #CCCCCC;
+    }
+    
+    &--delete:hover {
+      background: #5F1E1E;
+      color: #F44747;
+    }
+  }
+  
+  .empty-state {
+    color: #858585;
+  }
+}
+
+// =============================================================================
+// PERFORMANCE OPTIMIZATIONS
+// =============================================================================
+
+.tree-node {
+  // Force hardware acceleration
+  transform: translateZ(0);
+  
+  &__content {
+    // Optimize repaints
+    will-change: background-color;
+  }
+  
+  &__toggle {
+    // Smooth rotation
+    transform-origin: center;
+    will-change: transform;
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY & REDUCED MOTION
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-node__toggle,
+  .tree-action,
+  .search-field {
+    transition: none !important;
+  }
+}
+
+// Focus states for keyboard navigation
+.tree-node__content:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: -2px;
+}
+
+.tree-action:focus-visible {
+  outline: 1px solid var(--color-primary-500);
+  outline-offset: 1px;
+}
+
+.search-field__input:focus-visible {
+  outline: none; // Handled by parent
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================================================
+
+@media (max-width: 768px) {
+  .explorer {
+    font-size: 12px;
+  }
+  
+  .tree-node {
+    &__content {
+      height: 28px;
+      padding-right: 8px;
+    }
+    
+    &__actions {
+      right: 4px;
+    }
+  }
+  
+  .explorer__search {
+    padding: 6px 8px;
+  }
+}

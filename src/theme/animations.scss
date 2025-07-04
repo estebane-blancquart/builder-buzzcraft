@@ -1,0 +1,575 @@
+// =============================================================================
+// ANIMATIONS SYSTEM - MICRO-INTERACTIONS FLUIDES
+// =============================================================================
+
+// =============================================================================
+// 🎭 KEYFRAMES ANIMATIONS
+// =============================================================================
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40%, 43% {
+    transform: translateY(-0.5rem);
+  }
+  70% {
+    transform: translateY(-0.25rem);
+  }
+  90% {
+    transform: translateY(-0.125rem);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wiggle {
+  0%, 7% {
+    transform: rotateZ(0);
+  }
+  15% {
+    transform: rotateZ(-15deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg);
+  }
+  40%, 100% {
+    transform: rotateZ(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+// =============================================================================
+// 🎬 ANIMATION CLASSES UTILITAIRES
+// =============================================================================
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out) both;
+}
+
+.animate-fade-out {
+  animation: fadeOut var(--duration-normal) var(--ease-in) both;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-out) both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-out) both;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-normal) var(--ease-out) both;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out;
+}
+
+// =============================================================================
+// 🚀 ENHANCED BUTTON ANIMATIONS
+// =============================================================================
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-all);
+  transform: perspective(1px) translateZ(0);
+  
+  // Hover effects
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    transition-duration: var(--duration-fast);
+  }
+  
+  // Ripple effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width var(--duration-slow), height var(--duration-slow);
+  }
+  
+  &:active::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  // Loading state
+  &.loading {
+    pointer-events: none;
+    
+    .btn-text {
+      opacity: 0;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1rem;
+      height: 1rem;
+      margin: -0.5rem 0 0 -0.5rem;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  }
+}
+
+// Primary button glow
+.btn-primary {
+  &:hover {
+    box-shadow: var(--shadow-primary), 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+}
+
+// =============================================================================
+// 🎨 PANEL ANIMATIONS
+// =============================================================================
+
+.panel {
+  transition: var(--transition-all);
+  
+  &.panel-enter {
+    animation: slideInLeft var(--duration-normal) var(--ease-out);
+  }
+  
+  &.panel-exit {
+    animation: slideInLeft var(--duration-normal) var(--ease-in) reverse;
+  }
+  
+  // Panel sections expand/collapse
+  .panel-section {
+    transition: var(--transition-all);
+    
+    &.collapsed {
+      .panel-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-0.5rem);
+      }
+    }
+    
+    &:not(.collapsed) {
+      .panel-content {
+        max-height: 1000px;
+        opacity: 1;
+        transform: translateY(0);
+        transition: max-height var(--duration-slow) var(--ease-out),
+                   opacity var(--duration-normal) var(--ease-out),
+                   transform var(--duration-normal) var(--ease-out);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// 🌟 EXPLORER TREE ANIMATIONS
+// =============================================================================
+
+.tree-item {
+  transition: var(--transition-all);
+  
+  &:hover {
+    transform: translateX(2px);
+    background: var(--surface-hover);
+  }
+  
+  &.selected {
+    transform: translateX(4px);
+    background: var(--surface-selected);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--color-primary-500);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+  }
+  
+  // Tree expand animation
+  &.expanding .tree-children {
+    animation: slideInLeft var(--duration-normal) var(--ease-out);
+  }
+  
+  &.collapsing .tree-children {
+    animation: slideInLeft var(--duration-normal) var(--ease-in) reverse;
+  }
+}
+
+.tree-children {
+  overflow: hidden;
+  transition: var(--transition-all);
+}
+
+.tree-toggle {
+  transition: var(--transition-transform);
+  
+  &.expanded {
+    transform: rotate(90deg);
+  }
+}
+
+// =============================================================================
+// 💫 FORM CONTROLS ANIMATIONS
+// =============================================================================
+
+.form-input,
+.form-select,
+.form-textarea {
+  transition: var(--transition-all);
+  
+  &:focus {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md), 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  &:invalid {
+    animation: wiggle var(--duration-slow);
+  }
+}
+
+// Checkbox & Radio animations
+.checkbox,
+.radio {
+  input {
+    &:checked + .checkmark {
+      animation: scaleIn var(--duration-fast) var(--ease-bounce);
+    }
+  }
+}
+
+// Toggle switch animation
+.toggle {
+  .toggle-slider {
+    transition: var(--transition-all);
+    
+    &::before {
+      transition: var(--transition-transform);
+    }
+  }
+  
+  input:checked + .toggle-slider::before {
+    transform: translateX(100%);
+  }
+}
+
+// =============================================================================
+// 🎯 DRAG & DROP ANIMATIONS
+// =============================================================================
+
+.drag-preview {
+  transform: rotate(5deg) scale(1.05);
+  box-shadow: var(--shadow-xl);
+  opacity: 0.9;
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+.drop-zone {
+  transition: var(--transition-all);
+  
+  &.drag-over {
+    background: var(--surface-selected);
+    border: 2px dashed var(--color-primary-500);
+    transform: scale(1.02);
+  }
+  
+  &.drop-invalid {
+    background: var(--color-error-50);
+    border: 2px dashed var(--color-error-500);
+    animation: wiggle var(--duration-normal);
+  }
+}
+
+// =============================================================================
+// 🎪 LOADING STATES
+// =============================================================================
+
+.loading-skeleton {
+  background: linear-gradient(90deg,
+    var(--color-neutral-200) 25%,
+    var(--color-neutral-100) 50%,
+    var(--color-neutral-200) 75%
+  );
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+  
+  .dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    background: currentColor;
+    border-radius: 50%;
+    animation: pulse 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+}
+
+// =============================================================================
+// 🎨 NOTIFICATION ANIMATIONS
+// =============================================================================
+
+.notification {
+  &.notification-enter {
+    animation: slideInRight var(--duration-normal) var(--ease-bounce);
+  }
+  
+  &.notification-exit {
+    animation: slideInRight var(--duration-normal) var(--ease-in) reverse;
+  }
+  
+  // Progress bar animation
+  .notification-progress {
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: currentColor;
+      animation: progress linear;
+    }
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+// =============================================================================
+// 🎭 MODAL ANIMATIONS
+// =============================================================================
+
+.modal {
+  &.modal-enter {
+    .modal-overlay {
+      animation: fadeIn var(--duration-normal) var(--ease-out);
+    }
+    
+    .modal-content {
+      animation: scaleIn var(--duration-normal) var(--ease-bounce);
+    }
+  }
+  
+  &.modal-exit {
+    .modal-overlay {
+      animation: fadeOut var(--duration-fast) var(--ease-in);
+    }
+    
+    .modal-content {
+      animation: scaleIn var(--duration-fast) var(--ease-in) reverse;
+    }
+  }
+}
+
+// =============================================================================
+// 🎪 SPECIAL EFFECTS
+// =============================================================================
+
+// Glow effect
+.glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  animation: pulse 2s infinite;
+}
+
+// Floating effect
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Success celebration
+.success-celebration {
+  position: relative;
+  
+  &::after {
+    content: '🎉';
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    animation: bounce var(--duration-slow) var(--ease-bounce);
+    pointer-events: none;
+  }
+}
+
+// =============================================================================
+// 🌙 DARK MODE ADJUSTMENTS
+// =============================================================================
+
+[data-theme="dark"] {
+  .loading-skeleton {
+    background: linear-gradient(90deg,
+      var(--color-neutral-700) 25%,
+      var(--color-neutral-600) 50%,
+      var(--color-neutral-700) 75%
+    );
+  }
+  
+  .btn::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// =============================================================================
+// 🎯 REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin {
+    animation: none;
+  }
+}
