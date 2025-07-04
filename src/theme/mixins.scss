@@ -1,0 +1,217 @@
+// =============================================================================
+// THEME - 100% CSS VARIABLES V5 (ZERO SCSS DEPENDENCIES)
+// =============================================================================
+
+:root {
+  // === COULEURS PRINCIPALES ===
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #dbeafe;
+  
+  --secondary: #64748b;
+  --secondary-dark: #475569;
+  --secondary-light: #f1f5f9;
+  
+  // === COULEURS SÉMANTIQUES ===
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  --info: #06b6d4;
+  --info-light: #cffafe;
+  
+  // === BACKGROUNDS ===
+  --bg-app: #f8fafc;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-dark: #0f172a;
+  --bg-card: #ffffff;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+  
+  // === TEXTE ===
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #f8fafc;
+  --text-muted: #cbd5e1;
+  
+  // === BORDURES ===
+  --border-color: #e2e8f0;
+  --border-color-dark: #334155;
+  --border-focus: var(--primary);
+  --border-error: var(--error);
+  --border-width: 1px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+  
+  // === ÉTATS INTERACTIFS ===
+  --hover-bg: #f1f5f9;
+  --active-bg: #e2e8f0;
+  --disabled-bg: #f8fafc;
+  --disabled-text: #cbd5e1;
+  
+  // === SÉLECTION BUILDER ===
+  --selection-page: var(--primary);
+  --selection-module: var(--success);
+  --selection-component: var(--warning);
+  
+  // === ZONES DE DROP ===
+  --drop-zone-border: #cbd5e1;
+  --drop-zone-active: var(--primary);
+  --drop-zone-bg: rgba(59, 130, 246, 0.05);
+  
+  // === TYPOGRAPHIE ===
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  
+  // === ESPACEMENTS ===
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  
+  // === LAYOUT RESPONSIVE ===
+  --explorer-width: 280px;
+  --config-width: 320px;
+  --header-height: 60px;
+  
+  // === COMPOSANTS CONFIGURABLES (V5) ===
+  --scrollbar-width: 8px;
+  --touch-target-size: 44px;
+  --touch-target-mobile: 40px;
+  --input-height: 44px;
+  --input-height-mobile: 40px;
+  --button-height: 44px;
+  --color-picker-width: 60px;
+  --color-picker-height: 44px;
+  --color-picker-width-mobile: 50px;
+  --color-picker-height-mobile: 40px;
+  --textarea-min-height: 80px;
+  --range-height: 6px;
+  --range-thumb-size: 20px;
+  --range-thumb-border: 2px;
+  --checkbox-size: 20px;
+  --empty-icon-size: var(--text-4xl);
+  --empty-icon-size-mobile: var(--text-2xl);
+  
+  // === BORDURES & RAYONS ===
+  --radius-sm: 0.25rem;
+  --radius: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+  
+  // === OMBRES ===
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  // === ANIMATIONS ===
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  // === TRANSITIONS CONFIGURABLES ===
+  --transition-colors: color var(--duration-normal) var(--ease-in-out), background-color var(--duration-normal) var(--ease-in-out), border-color var(--duration-normal) var(--ease-in-out);
+  --transition-transform: transform var(--duration-normal) var(--ease-in-out);
+  --transition-opacity: opacity var(--duration-normal) var(--ease-in-out);
+  --transition-all: all var(--duration-normal) var(--ease-in-out);
+  
+  // === Z-INDEX ===
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+}
+
+// === DARK MODE ===
+[data-theme="dark"] {
+  --bg-app: var(--bg-dark);
+  --bg-primary: #1e293b;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-card: #1e293b;
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  
+  --border-color: var(--border-color-dark);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --active-bg: rgba(255, 255, 255, 0.1);
+  
+  --primary-light: rgba(59, 130, 246, 0.1);
+}
+
+// === RESPONSIVE VARIABLES ===
+@media (max-width: 767px) {
+  :root {
+    --explorer-width: 100%;
+    --config-width: 100%;
+    --header-height: 56px;
+    --touch-target-size: var(--touch-target-mobile);
+    --input-height: var(--input-height-mobile);
+    --color-picker-width: var(--color-picker-width-mobile);
+    --color-picker-height: var(--color-picker-height-mobile);
+    --empty-icon-size: var(--empty-icon-size-mobile);
+  }
+}
+
+// === HIGH CONTRAST ===
+@media (prefers-contrast: high) {
+  :root {
+    --border-width: var(--border-width-2);
+  }
+}
+
+// === REDUCED MOTION ===
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --transition-colors: none;
+    --transition-transform: none;
+    --transition-opacity: none;
+    --transition-all: none;
+  }
+}

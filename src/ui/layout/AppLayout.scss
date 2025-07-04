@@ -1,0 +1,162 @@
+// =============================================================================
+// APP LAYOUT - CSS VARIABLES MINIMAL
+// =============================================================================
+
+// =============================================================================
+// GRID PRINCIPAL
+// =============================================================================
+.builder-grid {
+  display: grid;
+  grid-template-columns: var(--explorer-width) 1fr var(--config-width);
+  grid-template-rows: var(--header-height) 1fr;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-app);
+  
+  // Support viewport units modernes
+  @supports (height: 100dvh) {
+    height: 100dvh;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE
+// =============================================================================
+@media (min-width: 768px) and (max-width: 1023px) {
+  .builder-grid {
+    grid-template-columns: 240px 1fr 280px;
+  }
+}
+
+@media (max-width: 767px) {
+  .builder-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--header-height) auto 1fr;
+  }
+}
+
+// =============================================================================
+// PLACEMENT EXPLICITE DES PANNEAUX DANS LA GRILLE
+// =============================================================================
+.builder-header {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+}
+.explorer-panel {
+  grid-column: 1 / 2;
+  grid-row: 2 / -1;
+  min-width: var(--explorer-width);
+  max-width: var(--explorer-width);
+}
+.preview-area {
+  grid-column: 2 / 3;
+  grid-row: 2 / -1;
+}
+.config-panel {
+  grid-column: 3 / 4;
+  grid-row: 2 / -1;
+  min-width: var(--config-width);
+  max-width: var(--config-width);
+}
+
+@media (max-width: 767px) {
+  .builder-header {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+  }
+  .explorer-panel {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    min-width: 0;
+    max-width: 100vw;
+  }
+  .preview-area {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+  }
+  .config-panel {
+    grid-column: 1 / -1;
+    grid-row: 4 / 5;
+    min-width: 0;
+    max-width: 100vw;
+  }
+}
+
+// =============================================================================
+// ANIMATIONS SIMPLES
+// =============================================================================
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.builder-grid > * {
+  animation: slideIn 0.3s ease-out;
+}
+
+// =============================================================================
+// REDUCED MOTION
+// =============================================================================
+@media (prefers-reduced-motion: reduce) {
+  .builder-grid > * {
+    animation: none;
+  }
+}
+
+// =============================================================================
+// CORRECTION FLUSH ET SÉPARATEURS NETS
+// =============================================================================
+.builder-header {
+  min-height: 44px;
+  height: 44px;
+  padding: 0 var(--space-3);
+  background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+  border-bottom: var(--border-width) solid var(--border-color);
+  box-shadow: none;
+}
+.explorer-panel {
+  border-right: var(--border-width) solid var(--border-color);
+  padding: 0;
+  min-width: var(--explorer-width);
+  max-width: var(--explorer-width);
+  background: var(--bg-secondary);
+}
+.preview-area {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: var(--bg-primary);
+  min-width: 0;
+  box-shadow: none;
+}
+.config-panel {
+  border-left: var(--border-width) solid var(--border-color);
+  padding: 0;
+  min-width: var(--config-width);
+  max-width: var(--config-width);
+  background: var(--bg-secondary);
+}
+
+@media (max-width: 767px) {
+  .builder-header {
+    min-height: 40px;
+    height: 40px;
+    padding: 0 var(--space-2);
+  }
+  .explorer-panel, .config-panel {
+    min-width: 0;
+    max-width: 100vw;
+    border-right: none;
+    border-left: none;
+    border-bottom: var(--border-width) solid var(--border-color);
+  }
+  .preview-area {
+    min-width: 0;
+    padding: 0 !important;
+  }
+}

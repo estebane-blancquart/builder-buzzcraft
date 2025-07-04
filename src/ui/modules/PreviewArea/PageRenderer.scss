@@ -1,0 +1,544 @@
+// =============================================================================
+// PAGE RENDERER - 100% CSS VARIABLES (V2 EXEMPLAIRE)
+// =============================================================================
+
+// =============================================================================
+// CONTENEUR PRINCIPAL
+// =============================================================================
+.page-renderer {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+// =============================================================================
+// HEADER DE LA PAGE
+// =============================================================================
+.page-header {
+  padding: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  border-radius: 0;
+}
+
+.page-title {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.page-description {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+// =============================================================================
+// CONTENU DE LA PAGE
+// =============================================================================
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-8) var(--space-2) var(--space-8) var(--space-2);
+  width: 100%;
+  box-sizing: border-box;
+  background: none;
+}
+
+// =============================================================================
+// CONTENEUR MODULE
+// =============================================================================
+.module-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 2px 12px 0 rgba(16, 24, 40, 0.06);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: background 0.2s, color 0.2s;
+  justify-content: center;
+
+  @media (max-width: 600px) {
+    max-width: 98vw;
+    padding: var(--space-4) var(--space-2);
+    border-radius: var(--radius-lg);
+  }
+
+  // Types de modules avec CSS variables
+  &.section,
+  &.features,
+  &.gallery,
+  &.contact {
+    background: var(--module-background, var(--bg-card));
+    color: var(--module-color, var(--text-primary));
+    box-shadow: 0 2px 8px 0 rgba(16, 24, 40, 0.04);
+  }
+
+  &.hero {
+    background: var(--module-background, linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%));
+    color: var(--module-color, #fff);
+    text-align: center;
+    padding: var(--space-10) var(--space-4);
+    box-shadow: 0 4px 16px 0 rgba(16, 24, 40, 0.08);
+  }
+
+  &.footer {
+    background: var(--module-background, var(--bg-dark));
+    color: var(--module-color, var(--text-inverse));
+  }
+}
+
+// Harmonisation du texte dans la carte
+.module-container h1,
+.module-container h2,
+.module-container h3 {
+  color: var(--text-primary);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  margin: 0 0 var(--space-2) 0;
+  text-align: left;
+}
+
+.module-container p {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  margin: 0;
+  text-align: left;
+}
+
+// =============================================================================
+// GRILLE MODULE
+// =============================================================================
+.module-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+// =============================================================================
+// WRAPPER COMPOSANT
+// =============================================================================
+.component-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// =============================================================================
+// COMPOSANTS AVEC CSS VARIABLES DYNAMIQUES
+// =============================================================================
+
+// Base commune pour tous les composants
+.component-base {
+  margin: var(--component-margin, 0 0 var(--space-4) 0);
+  padding: var(--component-padding, 0);
+  background: var(--component-background, transparent);
+  color: var(--component-color, inherit);
+  border: var(--component-border, none);
+  border-radius: var(--component-border-radius, 0);
+  font-size: var(--component-font-size, inherit);
+  font-weight: var(--component-font-weight, inherit);
+  line-height: var(--component-line-height, inherit);
+  text-align: var(--component-text-align, inherit);
+  width: var(--component-width, auto);
+  height: var(--component-height, auto);
+  max-width: var(--component-max-width, 100%);
+  opacity: var(--component-opacity, 1);
+  transform: var(--component-transform, none);
+  box-shadow: var(--component-box-shadow, none);
+  transition: var(--component-transition, var(--transition-all));
+  
+  // États conditionnels via CSS variables
+  &[data-selected="true"] {
+    outline: 2px solid var(--selection-component);
+    outline-offset: 2px;
+  }
+  
+  &[data-hover="true"] {
+    background: var(--component-hover-background, var(--hover-bg));
+  }
+}
+
+// =============================================================================
+// TITRE COMPONENT
+// =============================================================================
+.title-component {
+  @extend .component-base;
+  
+  line-height: var(--component-line-height, var(--leading-tight));
+  font-weight: var(--component-font-weight, var(--font-bold));
+  
+  // Niveaux avec fallbacks via CSS variables
+  &[data-level="1"] {
+    font-size: var(--component-font-size, var(--text-4xl));
+  }
+  
+  &[data-level="2"] {
+    font-size: var(--component-font-size, var(--text-3xl));
+  }
+  
+  &[data-level="3"] {
+    font-size: var(--component-font-size, var(--text-2xl));
+    font-weight: var(--component-font-weight, var(--font-semibold));
+  }
+  
+  &[data-level="4"] {
+    font-size: var(--component-font-size, var(--text-xl));
+    font-weight: var(--component-font-weight, var(--font-semibold));
+  }
+  
+  &[data-level="5"] {
+    font-size: var(--component-font-size, var(--text-lg));
+    font-weight: var(--component-font-weight, var(--font-medium));
+  }
+  
+  &[data-level="6"] {
+    font-size: var(--component-font-size, var(--text-base));
+    font-weight: var(--component-font-weight, var(--font-medium));
+  }
+}
+
+// =============================================================================
+// TEXTE COMPONENT
+// =============================================================================
+.text-component {
+  @extend .component-base;
+  
+  font-size: var(--component-font-size, var(--text-base));
+  line-height: var(--component-line-height, var(--leading-relaxed));
+}
+
+// =============================================================================
+// IMAGE COMPONENT
+// =============================================================================
+.image-component {
+  @extend .component-base;
+  
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--component-border-radius, var(--radius-md));
+    max-width: 100%;
+    object-fit: var(--component-object-fit, cover);
+  }
+  
+  .image-placeholder {
+    width: 100%;
+    height: var(--component-height, 200px);
+    background: var(--bg-tertiary);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--component-border-radius, var(--radius-md));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    
+    &::before {
+      content: "📷 Image";
+    }
+  }
+}
+
+// =============================================================================
+// BOUTON COMPONENT
+// =============================================================================
+.button-component {
+  @extend .component-base;
+  
+  display: inline-block;
+  padding: var(--component-padding, var(--space-3) var(--space-4));
+  border: var(--component-border, none);
+  border-radius: var(--component-border-radius, var(--radius-md));
+  font-size: var(--component-font-size, var(--text-base));
+  font-weight: var(--component-font-weight, var(--font-medium));
+  cursor: pointer;
+  text-decoration: none;
+  margin: var(--component-margin, 0 var(--space-2) var(--space-2) 0);
+  transition: var(--transition-all);
+  
+  // Variants avec CSS variables
+  &[data-variant="primary"] {
+    background: var(--component-background, var(--primary));
+    color: var(--component-color, white);
+    
+    &:hover {
+      background: var(--primary-dark);
+    }
+  }
+  
+  &[data-variant="secondary"] {
+    background: var(--component-background, var(--text-secondary));
+    color: var(--component-color, white);
+    
+    &:hover {
+      background: var(--text-primary);
+    }
+  }
+  
+  &[data-variant="outline"] {
+    background: var(--component-background, transparent);
+    color: var(--component-color, var(--primary));
+    border: var(--component-border, 2px solid var(--primary));
+    
+    &:hover {
+      background: var(--primary);
+      color: white;
+    }
+  }
+  
+  &[data-variant="ghost"] {
+    background: var(--component-background, transparent);
+    color: var(--component-color, var(--primary));
+    
+    &:hover {
+      background: var(--primary-light);
+    }
+  }
+  
+  // Tailles
+  &[data-size="sm"] {
+    padding: var(--component-padding, var(--space-2) var(--space-3));
+    font-size: var(--component-font-size, var(--text-sm));
+  }
+  
+  &[data-size="lg"] {
+    padding: var(--component-padding, var(--space-4) var(--space-6));
+    font-size: var(--component-font-size, var(--text-lg));
+  }
+}
+
+// =============================================================================
+// LISTE COMPONENT
+// =============================================================================
+.list-component {
+  @extend .component-base;
+  
+  ul, ol {
+    margin: 0;
+    padding-left: var(--space-6);
+    list-style-position: var(--component-list-position, outside);
+    
+    li {
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-relaxed);
+      color: inherit;
+    }
+  }
+  
+  &[data-style="disc"] ul { list-style-type: disc; }
+  &[data-style="circle"] ul { list-style-type: circle; }
+  &[data-style="square"] ul { list-style-type: square; }
+  &[data-style="decimal"] ol { list-style-type: decimal; }
+  &[data-style="lower-alpha"] ol { list-style-type: lower-alpha; }
+  &[data-style="upper-alpha"] ol { list-style-type: upper-alpha; }
+  &[data-style="none"] ul, &[data-style="none"] ol { list-style-type: none; padding-left: 0; }
+}
+
+// =============================================================================
+// VIDÉO COMPONENT
+// =============================================================================
+.video-component {
+  @extend .component-base;
+  
+  video {
+    width: 100%;
+    height: auto;
+    border-radius: var(--component-border-radius, var(--radius-md));
+  }
+  
+  .video-placeholder {
+    width: 100%;
+    height: var(--component-height, 300px);
+    background: var(--bg-tertiary);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--component-border-radius, var(--radius-md));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: var(--text-base);
+    
+    &::before {
+      content: "🎥 Vidéo";
+    }
+  }
+}
+
+// =============================================================================
+// ESPACEMENT COMPONENT
+// =============================================================================
+.spacer-component {
+  width: 100%;
+  height: var(--component-height, var(--space-4));
+  background: var(--component-background, transparent);
+  margin: var(--component-margin, 0);
+  
+  // Debug mode pour visualiser les spacers
+  &[data-debug="true"] {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.1) 10px,
+      rgba(0, 0, 0, 0.1) 20px
+    );
+    border: 1px dashed var(--border-color);
+  }
+}
+
+// =============================================================================
+// ICON COMPONENT
+// =============================================================================
+.icon-component {
+  @extend .component-base;
+  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--component-font-size, var(--text-xl));
+  width: var(--component-width, auto);
+  height: var(--component-height, auto);
+  
+  &::before {
+    content: var(--component-icon, "🔹");
+  }
+}
+
+// =============================================================================
+// COMPOSANT INCONNU
+// =============================================================================
+.component-unknown {
+  @extend .component-base;
+  
+  padding: var(--space-4);
+  background: var(--error-light);
+  color: var(--error);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: var(--text-sm);
+  border: 1px solid var(--error);
+  
+  &::before {
+    content: "⚠️ Composant inconnu: ";
+  }
+}
+
+// =============================================================================
+// ÉTAT VIDE
+// =============================================================================
+.empty-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+  
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-4);
+    opacity: 0.6;
+  }
+  
+  .empty-title {
+    margin: 0 0 var(--space-2) 0;
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+  
+  .empty-message {
+    margin: 0;
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE OPTIMISÉ
+// =============================================================================
+@media (max-width: 767px) {
+  .module-container {
+    max-width: 100%;
+    padding: var(--space-4) var(--space-2);
+  }
+  .page-header {
+    padding: var(--space-3) var(--space-2);
+  }
+}
+
+// =============================================================================
+// DARK MODE ADJUSTMENTS
+// =============================================================================
+[data-theme="dark"] {
+  .image-placeholder,
+  .video-placeholder {
+    border-color: var(--border-color);
+    background: var(--bg-secondary);
+  }
+  
+  .component-unknown {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--error);
+  }
+  
+  .page-header {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .module-container {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+@media print {
+  .page-renderer {
+    overflow: visible;
+    height: auto;
+  }
+  
+  .module-container {
+    page-break-inside: avoid;
+    padding: var(--space-4);
+  }
+  
+  .component-wrapper {
+    page-break-inside: avoid;
+  }
+  
+  .video-component,
+  .icon-component {
+    display: none;
+  }
+}

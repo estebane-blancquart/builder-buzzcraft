@@ -1,0 +1,708 @@
+// =============================================================================
+// THEME - STYLES DE BASE & RESET (ENHANCED)
+// =============================================================================
+
+// =============================================================================
+// RESET CSS MODERNE (ENHANCED)
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent; // Remove blue highlight on mobile
+  scroll-behavior: smooth;
+  
+  @include reduced-motion {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: $font-sans;
+  font-size: $text-base;
+  line-height: $leading-normal;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  @include font-smoothing;
+  -webkit-font-feature-settings: "kern";
+  font-feature-settings: "kern";
+  min-height: 100vh;
+  overflow-x: hidden; // Prevent horizontal scroll
+  
+  // Support pour les nouvelles unités viewport
+  @supports (height: 100dvh) {
+    min-height: 100dvh;
+  }
+}
+
+// =============================================================================
+// FLUSH GLOBAL - SUPPRESSION DE TOUTE MARGE/PADDING AUTOUR DU SITE
+// =============================================================================
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+// =============================================================================
+// TYPOGRAPHIE DE BASE (ENHANCED)
+// =============================================================================
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: $font-semibold;
+  line-height: $leading-tight;
+  color: var(--text-primary);
+  text-wrap: balance; // Améliore les coupures de ligne
+  
+  @supports not (text-wrap: balance) {
+    hyphens: auto;
+  }
+}
+
+h1 { @include heading(1); }
+h2 { @include heading(2); }
+h3 { @include heading(3); }
+h4 { @include heading(4); }
+h5 { @include heading(5); }
+h6 { @include heading(6); }
+
+p {
+  margin: 0;
+  line-height: $leading-normal;
+  color: var(--text-secondary);
+  text-wrap: pretty; // Évite les lignes orphelines
+  
+  @supports not (text-wrap: pretty) {
+    orphans: 2;
+    widows: 2;
+  }
+}
+
+// Amélioration des liens
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: $transition-colors;
+  
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+  
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: $radius-sm;
+  }
+  
+  // Améliorer l'accessibilité pour les liens externes
+  &[href^="http"]:not([href*="localhost"]):not([href*="127.0.0.1"])::after {
+    content: " ↗";
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-left: 2px;
+  }
+}
+
+// Emphasis et strong
+em {
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+strong {
+  font-weight: $font-semibold;
+  color: var(--text-primary);
+}
+
+// Code inline
+code {
+  font-family: $font-mono;
+  font-size: 0.9em;
+  padding: 2px 4px;
+  background: var(--bg-secondary);
+  border-radius: $radius-sm;
+  color: var(--text-primary);
+}
+
+// =============================================================================
+// LISTES (ENHANCED)
+// =============================================================================
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  margin: 0;
+}
+
+// Listes avec style (quand explicitement demandé)
+.styled-list {
+  padding-left: $space-6;
+  
+  &.bulleted {
+    list-style: disc;
+  }
+  
+  &.numbered {
+    list-style: decimal;
+  }
+  
+  li {
+    margin-bottom: $space-2;
+    line-height: $leading-relaxed;
+  }
+}
+
+// =============================================================================
+// FORMULAIRES (ENHANCED)
+// =============================================================================
+
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button, input {
+  overflow: visible;
+}
+
+button, select {
+  text-transform: none;
+}
+
+// Reset et base pour tous les boutons
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  @include button-reset;
+  
+  // Accessibilité touch
+  min-height: 44px;
+  min-width: 44px;
+  
+  &:focus-visible {
+    @include focus-ring;
+  }
+  
+  &:disabled {
+    @include disabled;
+  }
+}
+
+// Inputs de base
+input,
+textarea,
+select {
+  @include input-base;
+  
+  &:invalid:not(:focus):not(:placeholder-shown) {
+    @include error-state;
+  }
+}
+
+// Textarea spécifique
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  field-sizing: content; // Nouvelle propriété pour auto-resize
+  
+  @supports not (field-sizing: content) {
+    resize: vertical;
+  }
+}
+
+// Select custom
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right $space-2 center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: $space-8;
+}
+
+// Checkboxes et radios custom
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  position: relative;
+  
+  &:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+input[type="checkbox"] {
+  border-radius: $radius-sm;
+  
+  &:checked::after {
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -60%) rotate(45deg);
+  }
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+  
+  &:checked::after {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+  }
+}
+
+// Labels
+label {
+  cursor: pointer;
+  font-weight: $font-medium;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// Fieldsets
+fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: $radius;
+  padding: $space-4;
+  margin: 0;
+  
+  legend {
+    padding: 0 $space-2;
+    font-weight: $font-semibold;
+    color: var(--text-primary);
+  }
+}
+
+// =============================================================================
+// TABLEAUX (ENHANCED)
+// =============================================================================
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: $space-3 $space-4;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-weight: $font-semibold;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+tbody tr {
+  transition: $transition-colors;
+  
+  &:hover {
+    background: var(--hover-bg);
+  }
+  
+  &:last-child td {
+    border-bottom: none;
+  }
+}
+
+// =============================================================================
+// IMAGES & MEDIA (ENHANCED)
+// =============================================================================
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-radius: $radius;
+}
+
+// Images avec lazy loading
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity $duration-normal $ease-out;
+  
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+// Images placeholder
+img[src=""],
+img:not([src]) {
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  &::before {
+    content: "📷";
+    font-size: 2em;
+    opacity: 0.5;
+  }
+}
+
+svg {
+  vertical-align: middle;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+// Picture element
+picture {
+  display: block;
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+// =============================================================================
+// SÉLECTION DE TEXTE (ENHANCED)
+// =============================================================================
+
+::selection {
+  background-color: rgba($primary, 0.2);
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background-color: rgba($primary, 0.2);
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+// =============================================================================
+// SCROLLBARS GLOBALES (ENHANCED)
+// =============================================================================
+
+html {
+  @include custom-scrollbar(12px, var(--bg-secondary), var(--secondary));
+}
+
+// Smooth scrolling containers
+.smooth-scroll {
+  scroll-behavior: smooth;
+  
+  @include reduced-motion {
+    scroll-behavior: auto;
+  }
+}
+
+// =============================================================================
+// FOCUS MANAGEMENT (ENHANCED)
+// =============================================================================
+
+// Remove focus outline for mouse users
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+// Enhanced focus for keyboard users
+.focus-visible {
+  @include focus-ring;
+}
+
+// Skip to content (accessibilité)
+.skip-to-content {
+  @include visually-hidden;
+  @include button-base;
+  
+  position: fixed;
+  top: $space-4;
+  left: $space-4;
+  z-index: $z-tooltip;
+  background: var(--primary);
+  color: white;
+  
+  &:focus {
+    position: fixed;
+    width: auto;
+    height: auto;
+    clip: auto;
+    margin: 0;
+    overflow: visible;
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION (ENHANCED)
+// =============================================================================
+
+@include reduced-motion {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  // Garder les transitions essentielles
+  :focus-visible {
+    transition: none !important;
+  }
+}
+
+// =============================================================================
+// HIGH CONTRAST MODE (ENHANCED)
+// =============================================================================
+
+@include high-contrast {
+  button, input, select, textarea {
+    border-width: 2px;
+  }
+  
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+  
+  :focus-visible {
+    outline-width: 3px;
+  }
+}
+
+// =============================================================================
+// PRINT STYLES (ENHANCED)
+// =============================================================================
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+    color: black !important;
+  }
+  
+  // Afficher les URLs pour les liens
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+  
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  // Masquer les éléments non-print
+  .no-print {
+    display: none !important;
+  }
+}
+
+// =============================================================================
+// LAYOUT DE BASE POUR LE BUILDER (ENHANCED)
+// =============================================================================
+
+#root {
+  @include full-size;
+  min-height: 100vh;
+  overflow: hidden;
+  isolation: isolate; // Nouveau stacking context
+  
+  @supports (height: 100dvh) {
+    min-height: 100dvh;
+  }
+}
+
+// Container principal du builder
+.builder-app {
+  @include full-size;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-app);
+  container-type: inline-size; // Container queries
+}
+
+// =============================================================================
+// UTILITIES CLASSES COMMUNES (ENHANCED)
+// =============================================================================
+
+.sr-only {
+  @include visually-hidden;
+}
+
+.not-selectable {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.selectable {
+  user-select: text;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+.truncate {
+  @include truncate;
+}
+
+.line-clamp-2 {
+  @include line-clamp(2);
+}
+
+.line-clamp-3 {
+  @include line-clamp(3);
+}
+
+// Spacing utilities
+.space-y-2 > * + * {
+  margin-top: $space-2;
+}
+
+.space-y-4 > * + * {
+  margin-top: $space-4;
+}
+
+// Layout utilities
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: $space-2;
+}
+
+.gap-4 {
+  gap: $space-4;
+}
+
+// =============================================================================
+// DÉVELOPPEMENT ONLY (ENHANCED)
+// =============================================================================
+
+// Outline pour débugger en dev
+.debug-outline * {
+  outline: 1px solid rgba(255, 0, 0, 0.3) !important;
+}
+
+.debug-grid {
+  background-image: 
+    linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+// Performance debugging
+.debug-performance * {
+  background: rgba(255, 255, 0, 0.1) !important;
+  border: 1px solid rgba(255, 0, 0, 0.2) !important;
+  
+  &:hover {
+    background: rgba(255, 0, 0, 0.1) !important;
+  }
+}
+
+// Container queries debug
+@container (min-width: 400px) {
+  .debug-container::before {
+    content: "Container: >= 400px";
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: lime;
+    color: black;
+    padding: 4px 8px;
+    font-size: 12px;
+    z-index: 9999;
+  }
+}
