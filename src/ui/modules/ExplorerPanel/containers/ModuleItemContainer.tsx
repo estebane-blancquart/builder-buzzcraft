@@ -1,14 +1,74 @@
 // =============================================================================
-// MODULE ITEM CONTAINER - LOGIQUE DE CONNEXION AU STORE
+// MODULE ITEM CONTAINER - LOGIQUE DE CONNEXION AVEC DONNÉES MOCK
 // =============================================================================
-import React, { useCallback, useMemo } from 'react';
-import { useBuilder } from '../../../../core/context/BuilderContext';
-import { useSelection } from '../../../../core/hooks';
-import { moduleActions, componentActions } from '../../../../core/store/actions';
-import { selectComponentsForModule } from '../../../../core/store';
-import { generateComponentId, generateDefaultComponentName } from '../../../../core/utils';
+import React, { useCallback } from 'react';
 import { ModuleItem, type ModuleItemProps } from '../components/ModuleItem';
-import type { ComponentType, TitleProps, TextProps, ImageProps, ButtonProps, ListProps, VideoProps, SpacerProps } from '../../../../core/types';
+
+// =============================================================================
+// DONNÉES MOCK (PARTAGÉES)
+// =============================================================================
+const mockData = {
+  modules: {
+    'module-1': { 
+      id: 'module-1', 
+      name: 'Hero Section', 
+      type: 'hero',
+      layout: { desktop: 1, tablet: 1, mobile: 1 },
+      styles: {},
+      position: 0,
+      createdAt: Date.now() - 86400000,
+      updatedAt: Date.now() - 3600000
+    },
+    'module-2': { 
+      id: 'module-2', 
+      name: 'Features Grid', 
+      type: 'features',
+      layout: { desktop: 3, tablet: 2, mobile: 1 },
+      styles: {},
+      position: 1,
+      createdAt: Date.now() - 82800000,
+      updatedAt: Date.now() - 1800000
+    }
+  } as Record<string, any>,
+  components: {
+    'comp-1': { 
+      id: 'comp-1', 
+      name: 'Main Heading', 
+      type: 'title',
+      props: { text: 'Welcome', level: 1 },
+      styles: {},
+      layout: { span: 1, position: 0 },
+      createdAt: Date.now() - 86400000,
+      updatedAt: Date.now() - 3600000
+    },
+    'comp-2': { 
+      id: 'comp-2', 
+      name: 'Hero Description', 
+      type: 'text',
+      props: { text: 'Hero subtitle' },
+      styles: {},
+      layout: { span: 1, position: 1 },
+      createdAt: Date.now() - 86000000,
+      updatedAt: Date.now() - 2400000
+    },
+    'comp-3': { 
+      id: 'comp-3', 
+      name: 'CTA Button', 
+      type: 'button',
+      props: { text: 'Get Started', variant: 'primary', size: 'lg' },
+      styles: {},
+      layout: { span: 1, position: 2 },
+      createdAt: Date.now() - 85600000,
+      updatedAt: Date.now() - 1200000
+    }
+  } as Record<string, any>,
+  relations: {
+    moduleComponents: {
+      'module-1': ['comp-1', 'comp-2', 'comp-3'],
+      'module-2': []
+    } as Record<string, string[]>
+  }
+};
 
 // =============================================================================
 // INTERFACE CONTAINER
@@ -17,8 +77,12 @@ interface ModuleItemContainerProps {
   readonly moduleId: string;
   readonly pageId: string;
   readonly isExpanded: boolean;
+  readonly selection: { pageId?: string; moduleId?: string; componentId?: string };
+  readonly hoveredItem: string | null;
   readonly onToggleExpand: (moduleId: string) => void;
   readonly onComponentSelect: (pageId: string, moduleId: string, componentId: string) => void;
+  readonly onSelectItem: (type: string, id: string) => void;
+  readonly onHover: (itemId: string | null) => void;
 }
 
 // =============================================================================
@@ -28,103 +92,46 @@ export const ModuleItemContainer: React.FC<ModuleItemContainerProps> = ({
   moduleId,
   pageId,
   isExpanded,
+  selection,
+  hoveredItem,
   onToggleExpand,
-  onComponentSelect
+  onComponentSelect,
+  onSelectItem,
+  onHover
 }) => {
-  const { state, dispatch } = useBuilder();
-  const { state: selection, actions } = useSelection();
+  // =============================================================================
+  // SÉLECTEURS DE DONNÉES
+  // =============================================================================
+  const module = mockData.modules[moduleId];
+  const componentIds = mockData.relations.moduleComponents[moduleId] || [];
+  const components = componentIds.map(id => mockData.components[id]).filter(Boolean);
 
   // =============================================================================
-  // DONNÉES SÉLECTÉES DU STORE
+  // ÉTAT DÉRIVÉ
   // =============================================================================
-  const module = state.entities.modules[moduleId];
-  const components = useMemo(() => 
-    selectComponentsForModule(state)(moduleId), 
-    [state, moduleId]
-  );
-  
-  const isSelected = selection.moduleId === moduleId;
+  const isSelected = selection.moduleId === moduleId && !selection.componentId;
 
   // =============================================================================
-  // CALLBACKS CONNECTÉS AU STORE
+  // HANDLERS (LOGIQUE MÉTIER)
   // =============================================================================
-  const handleSelect = useCallback((moduleId: string) => {
-    actions.selectModule(pageId, moduleId);
-  }, [actions, pageId]);
+  const handleSelect = useCallback((selectedModuleId: string) => {
+    onSelectItem('module', selectedModuleId);
+  }, [onSelectItem]);
 
-  const handleEdit = useCallback((moduleId: string, newName: string) => {
-    dispatch(moduleActions.update(moduleId, { 
-      name: newName,
-      updatedAt: Date.now()
-    }));
-  }, [dispatch]);
+  const handleEdit = useCallback((selectedModuleId: string, newName: string) => {
+    console.log('Edit module:', selectedModuleId, newName);
+    // TODO: Dispatch action pour modifier le nom
+  }, []);
 
-  const handleDelete = useCallback((moduleId: string) => {
-    // Supprimer le module et ses relations
-    dispatch(moduleActions.remove(moduleId, pageId));
-    
-    // Clear selection si ce module était sélectionné
-    if (selection.moduleId === moduleId) {
-      actions.selectPage(pageId);
-    }
-  }, [dispatch, selection.moduleId, actions, pageId]);
+  const handleDelete = useCallback((selectedModuleId: string) => {
+    console.log('Delete module:', selectedModuleId);
+    // TODO: Dispatch action pour supprimer le module
+  }, []);
 
-  const handleCreateComponent = useCallback((moduleId: string, componentType: string) => {
-    const newComponentId = generateComponentId();
-    const existingNames = components.map(c => c.name);
-    const componentName = generateDefaultComponentName(componentType, existingNames);
-    
-    // Mapping des types modal vers types système
-    const typeMapping: Record<string, ComponentType> = {
-      'heading': 'title',
-      'paragraph': 'text',
-      'image': 'image',
-      'button': 'button',
-      'list': 'list',
-      'video': 'video',
-      'spacer': 'spacer',
-      'quote': 'text'
-    };
-    
-    const systemType = typeMapping[componentType] || 'text';
-    
-    // Props par défaut selon le type
-    const getDefaultProps = (type: ComponentType) => {
-      switch (type) {
-        case 'title':
-          return { text: 'Nouveau titre', level: 2 } as TitleProps;
-        case 'text':
-          return { text: 'Nouveau paragraphe' } as TextProps;
-        case 'image':
-          return { src: '', alt: 'Image' } as ImageProps;
-        case 'button':
-          return { text: 'Nouveau bouton', variant: 'primary' } as ButtonProps;
-        case 'list':
-          return { items: ['Élément 1', 'Élément 2'], listStyle: 'bulleted' as const } as ListProps;
-        case 'video':
-          return { src: '', controls: true } as VideoProps;
-        case 'spacer':
-          return { height: '20px' } as SpacerProps;
-        default:
-          return { text: 'Nouveau contenu' } as TextProps;
-      }
-    };
-    
-    const newComponent = {
-      id: newComponentId,
-      name: componentName,
-      type: systemType,
-      props: getDefaultProps(systemType),
-      span: 1 as const, // ✅ Type littéral strict
-      layout: { span: 1 as const, position: components.length }, // ✅ Type littéral strict
-      styles: {},
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-
-    dispatch(componentActions.add(moduleId, newComponent));
-    actions.selectComponent(pageId, moduleId, newComponentId);
-  }, [dispatch, components, actions, pageId]);
+  const handleCreateComponent = useCallback((componentType: string) => {
+    console.log('Create component:', componentType, 'in module:', moduleId);
+    // TODO: Dispatch action pour créer un composant
+  }, [moduleId]);
 
   const handleComponentSelect = useCallback((componentId: string) => {
     onComponentSelect(pageId, moduleId, componentId);
@@ -149,6 +156,8 @@ export const ModuleItemContainer: React.FC<ModuleItemContainerProps> = ({
     // État UI dérivé
     isSelected,
     isExpanded,
+    hoveredItem,
+    selection,
     
     // Callbacks découplés
     onSelect: handleSelect,
@@ -157,6 +166,7 @@ export const ModuleItemContainer: React.FC<ModuleItemContainerProps> = ({
     onDelete: handleDelete,
     onCreateComponent: handleCreateComponent,
     onComponentSelect: handleComponentSelect,
+    onHover,
   };
 
   // =============================================================================

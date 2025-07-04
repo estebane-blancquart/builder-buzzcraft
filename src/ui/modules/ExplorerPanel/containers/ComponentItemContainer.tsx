@@ -1,20 +1,58 @@
 // =============================================================================
-// COMPONENT ITEM CONTAINER - LOGIQUE DE CONNEXION AU STORE
+// COMPONENT ITEM CONTAINER - LOGIQUE DE CONNEXION AVEC DONNÉES MOCK
 // =============================================================================
 import React, { useCallback } from 'react';
-import { useBuilder } from '../../../../core/context/BuilderContext';
-import { useSelection } from '../../../../core/hooks';
-import { componentActions } from '../../../../core/store/actions';
 import { ComponentItem, type ComponentItemProps } from '../components/ComponentItem';
+
+// =============================================================================
+// DONNÉES MOCK (PARTAGÉES)
+// =============================================================================
+const mockData = {
+  components: {
+    'comp-1': { 
+      id: 'comp-1', 
+      name: 'Main Heading', 
+      type: 'title',
+      props: { text: 'Welcome', level: 1 },
+      styles: {},
+      layout: { span: 1, position: 0 },
+      createdAt: Date.now() - 86400000,
+      updatedAt: Date.now() - 3600000
+    },
+    'comp-2': { 
+      id: 'comp-2', 
+      name: 'Hero Description', 
+      type: 'text',
+      props: { text: 'Hero subtitle' },
+      styles: {},
+      layout: { span: 1, position: 1 },
+      createdAt: Date.now() - 86000000,
+      updatedAt: Date.now() - 2400000
+    },
+    'comp-3': { 
+      id: 'comp-3', 
+      name: 'CTA Button', 
+      type: 'button',
+      props: { text: 'Get Started', variant: 'primary', size: 'lg' },
+      styles: {},
+      layout: { span: 1, position: 2 },
+      createdAt: Date.now() - 85600000,
+      updatedAt: Date.now() - 1200000
+    }
+  } as Record<string, any>
+};
 
 // =============================================================================
 // INTERFACE CONTAINER
 // =============================================================================
 interface ComponentItemContainerProps {
   readonly componentId: string;
-  readonly moduleId: string;
   readonly pageId: string;
+  readonly moduleId: string;
+  readonly selection: { pageId?: string; moduleId?: string; componentId?: string };
+  readonly hoveredItem: string | null;
   readonly onSelect: (componentId: string) => void;
+  readonly onHover: (itemId: string | null) => void;
 }
 
 // =============================================================================
@@ -22,42 +60,37 @@ interface ComponentItemContainerProps {
 // =============================================================================
 export const ComponentItemContainer: React.FC<ComponentItemContainerProps> = ({
   componentId,
-  moduleId,
-  pageId,
-  onSelect
+  selection,
+  hoveredItem,
+  onSelect,
+  onHover
 }) => {
-  const { state, dispatch } = useBuilder();
-  const { state: selection, actions } = useSelection();
+  // =============================================================================
+  // SÉLECTEURS DE DONNÉES
+  // =============================================================================
+  const component = mockData.components[componentId];
 
   // =============================================================================
-  // DONNÉES SÉLECTÉES DU STORE
+  // ÉTAT DÉRIVÉ
   // =============================================================================
-  const component = state.entities.components[componentId];
   const isSelected = selection.componentId === componentId;
 
   // =============================================================================
-  // CALLBACKS CONNECTÉS AU STORE
+  // HANDLERS (LOGIQUE MÉTIER)
   // =============================================================================
-  const handleSelect = useCallback((componentId: string) => {
-    onSelect(componentId);
+  const handleSelect = useCallback((selectedComponentId: string) => {
+    onSelect(selectedComponentId);
   }, [onSelect]);
 
-  const handleEdit = useCallback((componentId: string, newName: string) => {
-    dispatch(componentActions.update(componentId, { 
-      name: newName,
-      updatedAt: Date.now()
-    }));
-  }, [dispatch]);
+  const handleEdit = useCallback((selectedComponentId: string, newName: string) => {
+    console.log('Edit component:', selectedComponentId, newName);
+    // TODO: Dispatch action pour modifier le nom
+  }, []);
 
-  const handleDelete = useCallback((componentId: string) => {
-    // Supprimer le composant
-    dispatch(componentActions.remove(componentId, moduleId));
-    
-    // Clear selection si ce composant était sélectionné
-    if (selection.componentId === componentId) {
-      actions.selectModule(pageId, moduleId);
-    }
-  }, [dispatch, selection.componentId, actions, pageId, moduleId]);
+  const handleDelete = useCallback((selectedComponentId: string) => {
+    console.log('Delete component:', selectedComponentId);
+    // TODO: Dispatch action pour supprimer le composant
+  }, []);
 
   // =============================================================================
   // GUARD CLAUSE
@@ -72,16 +105,16 @@ export const ComponentItemContainer: React.FC<ComponentItemContainerProps> = ({
   const componentItemProps: ComponentItemProps = {
     // Data pure
     component,
-    pageId,
-    moduleId,
     
     // État UI dérivé
     isSelected,
+    hoveredItem,
     
     // Callbacks découplés
     onSelect: handleSelect,
     onEdit: handleEdit,
     onDelete: handleDelete,
+    onHover,
   };
 
   // =============================================================================

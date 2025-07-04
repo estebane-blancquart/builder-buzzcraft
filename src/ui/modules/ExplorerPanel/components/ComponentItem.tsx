@@ -1,25 +1,46 @@
 // =============================================================================
-// COMPONENT ITEM - COMPOSANT PUR DÉCOUPLÉ
+// COMPONENT ITEM - COMPOSANT PUR DÉCOUPLÉ  
 // =============================================================================
 import React, { useState } from 'react';
-import type { Component } from '../../../../core/types';
+
+// =============================================================================
+// ICÔNES (EXTRAITES DU EXPLORER PANEL)
+// =============================================================================
+const Icons = {
+  Component: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.2"/>
+      <circle cx="7" cy="7" r="2" fill="currentColor"/>
+    </svg>
+  ),
+  
+  Delete: () => (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M8 3V2C8 1.44772 7.55228 1 7 1H5C4.44772 1 4 1.44772 4 2V3M1.5 3H10.5M9.5 3V9C9.5 9.55228 9.05228 10 8.5 10H3.5C2.94772 10 2.5 9.55228 2.5 9V3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+};
 
 // =============================================================================
 // INTERFACES PROPS (DÉCOUPLÉES)
 // =============================================================================
 export interface ComponentItemProps {
   // Data pure
-  readonly component: Component;
-  readonly pageId: string;
-  readonly moduleId: string;
+  readonly component: {
+    readonly id: string;
+    readonly name: string;
+    readonly type: string;
+  };
   
   // État UI dérivé
   readonly isSelected: boolean;
+  readonly hoveredItem: string | null;
   
   // Callbacks découplés
   readonly onSelect: (componentId: string) => void;
   readonly onEdit: (componentId: string, newName: string) => void;
   readonly onDelete: (componentId: string) => void;
+  readonly onHover: (itemId: string | null) => void;
 }
 
 // =============================================================================
@@ -27,12 +48,12 @@ export interface ComponentItemProps {
 // =============================================================================
 export const ComponentItem: React.FC<ComponentItemProps> = React.memo(({
   component,
-  pageId, // ✅ Utilisé dans le JSX (data attributes)
-  moduleId, // ✅ Utilisé dans le JSX (data attributes)
   isSelected,
+  hoveredItem,
   onSelect,
   onEdit,
-  onDelete
+  onDelete,
+  onHover
 }) => {
   // =============================================================================
   // ÉTAT LOCAL (ÉDITION INLINE)
@@ -50,13 +71,8 @@ export const ComponentItem: React.FC<ComponentItemProps> = React.memo(({
 
   const handleEditStart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setEditName(component.name);
     setIsEditing(true);
-  };
-
-  const handleEditCancel = () => {
-    setIsEditing(false);
-    setEditName('');
+    setEditName(component.name);
   };
 
   const handleEditSave = () => {
@@ -64,10 +80,14 @@ export const ComponentItem: React.FC<ComponentItemProps> = React.memo(({
       onEdit(component.id, editName.trim());
     }
     setIsEditing(false);
+  };
+
+  const handleEditCancel = () => {
+    setIsEditing(false);
     setEditName('');
   };
 
-  const handleEditKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleEditSave();
     } else if (e.key === 'Escape') {
@@ -77,85 +97,67 @@ export const ComponentItem: React.FC<ComponentItemProps> = React.memo(({
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm(`Supprimer le composant "${component.name}" ?`)) {
-      onDelete(component.id);
-    }
+    onDelete(component.id);
+  };
+
+  const handleMouseEnter = () => {
+    onHover(component.id);
+  };
+
+  const handleMouseLeave = () => {
+    onHover(null);
   };
 
   // =============================================================================
-  // ICÔNE PAR TYPE
+  // ÉTAT DÉRIVÉ
   // =============================================================================
-  const getComponentIcon = (type: string): string => {
-    switch (type) {
-      case 'title':
-        return '📝';
-      case 'text':
-        return '📄';
-      case 'image':
-        return '🖼️';
-      case 'button':
-        return '🔘';
-      case 'list':
-        return '📋';
-      case 'video':
-        return '🎥';
-      case 'spacer':
-        return '⬜';
-      case 'icon':
-        return '⭐';
-      default:
-        return '📝';
-    }
-  };
+  const isHovered = hoveredItem === component.id;
 
   // =============================================================================
-  // RENDER DÉCOUPLÉ
+  // RENDER
   // =============================================================================
   return (
-    <div className={`component-item ${isSelected ? 'selected' : ''}`} data-page-id={pageId} data-module-id={moduleId}>
-      <div className="component-header" onClick={handleSelect}>
-        <div className="component-info">
-          <div className="component-icon">
-            {getComponentIcon(component.type)}
-          </div>
-          
+    <div className="tree-node tree-node--component">
+      <div
+        className={`tree-node__content ${isSelected ? 'tree-node--selected' : ''}`}
+        onClick={handleSelect}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="tree-node__spacer"></div>
+
+        <div className="tree-node__icon">
+          <Icons.Component />
+        </div>
+
+        <div className="tree-node__label">
           {isEditing ? (
             <input
               type="text"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
-              onKeyDown={handleEditKeyDown}
-              onBlur={handleEditCancel}
-              className="component-name-input"
+              onBlur={handleEditSave}
+              onKeyDown={handleKeyDown}
+              className="tree-node__edit-input"
               autoFocus
             />
           ) : (
-            <span className="component-name">{component.name}</span>
+            <span onDoubleClick={handleEditStart}>{component.name}</span>
           )}
-          
-          <span className="component-type">({component.type})</span>
         </div>
 
-        <div className="component-actions">
-          <button 
-            className="action-btn edit-btn"
-            onClick={handleEditStart}
-            title="Éditer"
-          >
-            ✏️
-          </button>
-          <button 
-            className="action-btn delete-btn"
-            onClick={handleDelete}
-            title="Supprimer"
-          >
-            🗑️
-          </button>
-        </div>
+        {isHovered && !isEditing && (
+          <div className="tree-node__actions">
+            <button
+              className="tree-action"
+              onClick={handleDelete}
+              title="Delete component"
+            >
+              <Icons.Delete />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 });
-
-// Display name pour debug
-ComponentItem.displayName = 'ComponentItem';
