@@ -1,5 +1,5 @@
 // =============================================================================
-// HEADER - COMPOSANT TOUT-EN-UN
+// HEADER - VERSION MODERNE AVEC NOUVEAU DESIGN SYSTEM
 // =============================================================================
 import React, { useCallback, useState, useEffect } from 'react';
 import { useBuilder } from '../../../core/context/BuilderContext';
@@ -8,7 +8,7 @@ import type { DeviceType } from '../../../core/types';
 import './Header.scss';
 
 // =============================================================================
-// INTERFACE PUBLIQUE
+// INTERFACE
 // =============================================================================
 interface HeaderProps {
   readonly onPreview?: () => void;
@@ -17,7 +17,7 @@ interface HeaderProps {
 }
 
 // =============================================================================
-// COMPOSANT HEADER COMPLET
+// COMPOSANT HEADER MODERNE
 // =============================================================================
 export const Header: React.FC<HeaderProps> = ({
   onPreview,
@@ -26,12 +26,11 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { state, dispatch } = useBuilder();
   const { activeDevice, viewport } = state.ui;
-
-  // =============================================================================
-  // ÉTAT LOCAL
-  // =============================================================================
   const [isDark, setIsDark] = useState(false);
 
+  // =============================================================================
+  // THEME MANAGEMENT
+  // =============================================================================
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     setIsDark(currentTheme === 'dark');
@@ -64,153 +63,141 @@ export const Header: React.FC<HeaderProps> = ({
   const handleZoomOut = () => handleZoomChange(viewport.zoom - 0.1);
   const handleZoomReset = () => handleZoomChange(1);
 
-  const handlePreview = onPreview || (() => console.log('Preview clicked'));
-  const handleSave = onSave || (() => console.log('Save clicked'));
-  const handleExport = onExport || (() => console.log('Export clicked'));
-
   // =============================================================================
   // RENDER
   // =============================================================================
   return (
-    <header className="builder-header">
-      {/* Logo / Titre */}
-      <div className="header-section header-brand">
-        <div className="brand-logo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor"/>
-            <rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor"/>
-            <rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor"/>
-            <rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor"/>
+    <header className="modern-header">
+      {/* Logo / Brand */}
+      <div className="header-brand">
+        <div className="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor"/>
+            <rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor"/>
           </svg>
         </div>
-        <div className="brand-text">
+        <div className="brand-content">
           <h1 className="brand-title">BuzzCraft</h1>
           <span className="brand-subtitle">Builder</span>
         </div>
+        <div className="project-name">
+          <span>Nouveau projet</span>
+        </div>
       </div>
 
-      {/* Sélecteur de device */}
-      <div className="header-section header-devices">
-        <div className="device-selector">
+      {/* Navigation centrale */}
+      <div className="header-nav">
+        {/* Device Selector */}
+        <div className="device-group">
           <button
             className={`device-btn ${activeDevice === 'mobile' ? 'active' : ''}`}
             onClick={() => handleDeviceChange('mobile')}
-            title="Vue Mobile"
+            title="Mobile"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <rect x="7" y="2" width="10" height="20" rx="2" stroke="currentColor" strokeWidth="2"/>
-              <circle cx="12" cy="18" r="1" fill="currentColor"/>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <rect x="7" y="2" width="10" height="20" rx="3" stroke="currentColor" strokeWidth="2"/>
+              <path d="M12 18h0" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
+            <span>Mobile</span>
           </button>
+          
           <button
             className={`device-btn ${activeDevice === 'tablet' ? 'active' : ''}`}
             onClick={() => handleDeviceChange('tablet')}
-            title="Vue Tablet"
+            title="Tablet"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
               <circle cx="12" cy="17.5" r="0.5" fill="currentColor"/>
             </svg>
+            <span>Tablet</span>
           </button>
+          
           <button
             className={`device-btn ${activeDevice === 'desktop' ? 'active' : ''}`}
             onClick={() => handleDeviceChange('desktop')}
-            title="Vue Desktop"
+            title="Desktop"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <rect x="2" y="4" width="20" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
-              <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2"/>
+              <path d="M2 16h20" stroke="currentColor" strokeWidth="2"/>
+              <path d="M12 20v-4" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 20h8" stroke="currentColor" strokeWidth="2"/>
             </svg>
+            <span>Desktop</span>
           </button>
         </div>
-      </div>
 
-      {/* Contrôles de zoom */}
-      <div className="header-section header-zoom">
-        <div className="zoom-controls">
-          <button
-            className="zoom-btn"
-            onClick={handleZoomOut}
-            disabled={viewport.zoom <= 0.1}
-            title="Zoom arrière"
-          >
+        {/* Zoom Controls */}
+        <div className="zoom-group">
+          <button onClick={handleZoomOut} disabled={viewport.zoom <= 0.1} title="Zoom Out">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-              <path d="M21 21l-4.35-4.35M8 11h6" stroke="currentColor" strokeWidth="2"/>
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 11h6" stroke="currentColor" strokeWidth="2"/>
             </svg>
           </button>
           
-          <span className="zoom-display" onClick={handleZoomReset} title="Reset zoom">
+          <button onClick={handleZoomReset} className="zoom-reset">
             {Math.round(viewport.zoom * 100)}%
-          </span>
+          </button>
           
-          <button
-            className="zoom-btn"
-            onClick={handleZoomIn}
-            disabled={viewport.zoom >= 3}
-            title="Zoom avant"
-          >
+          <button onClick={handleZoomIn} disabled={viewport.zoom >= 3} title="Zoom In">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke="currentColor" strokeWidth="2"/>
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2"/>
+              <path d="M11 8v6" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 11h6" stroke="currentColor" strokeWidth="2"/>
             </svg>
           </button>
         </div>
       </div>
 
-      {/* Actions principales */}
-      <div className="header-section header-actions">
-        <button
-          className="action-btn preview-btn"
-          onClick={handlePreview}
-          title="Aperçu"
-        >
+      {/* Actions droite */}
+      <div className="header-actions">
+        <button className="btn btn-ghost" onClick={onPreview}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2"/>
             <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
           </svg>
-          Aperçu
+          <span>Aperçu</span>
         </button>
         
-        <button
-          className="action-btn save-btn"
-          onClick={handleSave}
-          title="Sauvegarder"
-        >
+        <button className="btn btn-outline" onClick={onSave}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" strokeWidth="2"/>
             <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" strokeWidth="2"/>
             <polyline points="7,3 7,8 15,8" stroke="currentColor" strokeWidth="2"/>
           </svg>
-          Sauvegarder
+          <span>Sauvegarder</span>
         </button>
         
-        <button
-          className="action-btn export-btn"
-          onClick={handleExport}
-          title="Exporter"
-        >
+        <button className="btn btn-primary" onClick={onExport}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5-5 5 5M12 15V5" stroke="currentColor" strokeWidth="2"/>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2"/>
+            <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2"/>
+            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2"/>
           </svg>
-          Exporter
+          <span>Exporter</span>
         </button>
-      </div>
-
-      {/* Toggle thème */}
-      <div className="header-section header-theme">
-        <button
-          className="theme-toggle"
-          onClick={handleThemeToggle}
-          title={`Basculer vers le thème ${isDark ? 'clair' : 'sombre'}`}
-        >
+        
+        <button className="theme-toggle" onClick={handleThemeToggle} title="Changer le thème">
           {isDark ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/>
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2"/>
+              <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2"/>
+              <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2"/>
+              <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2"/>
+              <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2"/>
             </svg>
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" strokeWidth="2"/>
             </svg>
           )}
@@ -219,5 +206,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-
-Header.displayName = 'Header';

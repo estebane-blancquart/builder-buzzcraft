@@ -1,0 +1,420 @@
+// =============================================================================
+// FORM CONTROLS - COMPOSANTS RÉUTILISABLES
+// =============================================================================
+
+// =============================================================================
+// 🎛️ BASE FORM STYLES
+// =============================================================================
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  
+  &.required::after {
+    content: ' *';
+    color: var(--color-error-500);
+  }
+}
+
+.form-help {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+.form-error {
+  font-size: var(--text-xs);
+  color: var(--color-error-600);
+  line-height: var(--leading-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  
+  &::before {
+    content: '⚠';
+    font-size: var(--text-sm);
+  }
+}
+
+// =============================================================================
+// 📝 INPUT CONTROLS
+// =============================================================================
+
+.form-input {
+  height: var(--input-height);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius);
+  transition: var(--transition-colors);
+  outline: none;
+  
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+  
+  &:hover {
+    border-color: var(--border-secondary);
+  }
+  
+  &:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  &:disabled {
+    background-color: var(--surface-disabled);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+  
+  &.error {
+    border-color: var(--border-error);
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+  
+  // === SIZE VARIANTS ===
+  &.sm {
+    height: var(--input-height-sm);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+  
+  &.lg {
+    height: var(--input-height-lg);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-base);
+  }
+}
+
+// =============================================================================
+// 🎨 COLOR INPUT (SPÉCIALISÉ)
+// =============================================================================
+
+.color-input {
+  @extend .form-input;
+  
+  width: 60px;
+  height: var(--input-height);
+  padding: 4px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--radius) - 2px);
+  }
+  
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: calc(var(--radius) - 2px);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  &::-moz-color-swatch {
+    border: none;
+    border-radius: calc(var(--radius) - 2px);
+  }
+  
+  &:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+// =============================================================================
+// 📄 TEXTAREA
+// =============================================================================
+
+.form-textarea {
+  @extend .form-input;
+  
+  height: auto;
+  min-height: 80px;
+  resize: vertical;
+  line-height: var(--leading-relaxed);
+  
+  &.no-resize {
+    resize: none;
+  }
+}
+
+// =============================================================================
+// 📋 SELECT
+// =============================================================================
+
+.form-select {
+  @extend .form-input;
+  
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: var(--space-8);
+  cursor: pointer;
+  
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%233b82f6' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+}
+
+// =============================================================================
+// 🎯 RANGE SLIDER
+// =============================================================================
+
+.form-range {
+  width: 100%;
+  height: 6px;
+  background: var(--color-neutral-200);
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+  
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary-500);
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition-all);
+    
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+  }
+  
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary-500);
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition-all);
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  &:focus {
+    &::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    
+    &::-moz-range-thumb {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+  }
+}
+
+// =============================================================================
+// ☑️ CHECKBOX & RADIO
+// =============================================================================
+
+.form-checkbox,
+.form-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-colors);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 7.793l6.646-6.647a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+      opacity: 0;
+      transition: opacity var(--duration-fast) var(--ease-in-out);
+    }
+  }
+  
+  input:checked + .checkmark {
+    background-color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    
+    &::after {
+      opacity: 1;
+    }
+  }
+  
+  input:focus + .checkmark {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  &:hover input:not(:checked) + .checkmark {
+    border-color: var(--border-secondary);
+  }
+}
+
+.form-radio .checkmark {
+  border-radius: 50%;
+  
+  &::after {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    background-image: none;
+  }
+}
+
+// =============================================================================
+// 🏷️ FIELD GROUP (STYLE FORM SECTIONS)
+// =============================================================================
+
+.field-group {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  
+  .field-group-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    
+    &::before {
+      content: '';
+      width: 3px;
+      height: 16px;
+      background: var(--color-primary-500);
+      border-radius: var(--radius-full);
+    }
+  }
+  
+  .form-group {
+    margin-bottom: var(--space-3);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// =============================================================================
+// 🎨 STYLE PREVIEW (POUR STYLEFORM)
+// =============================================================================
+
+.style-preview {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  position: relative;
+  
+  &::before {
+    content: 'Aperçu';
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    opacity: 0.7;
+  }
+  
+  .preview-content {
+    padding: var(--space-2);
+    background: inherit;
+    color: inherit;
+    border: inherit;
+    border-radius: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    width: inherit;
+    height: inherit;
+    max-width: inherit;
+  }
+}
+
+// =============================================================================
+// 💡 INPUT WITH UNITS (ex: width, height)
+// =============================================================================
+
+.input-with-unit {
+  display: flex;
+  align-items: center;
+  
+  .form-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    flex: 1;
+  }
+  
+  .unit-selector {
+    height: var(--input-height);
+    padding: 0 var(--space-2);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-left: none;
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    min-width: 40px;
+    justify-content: center;
+  }
+}

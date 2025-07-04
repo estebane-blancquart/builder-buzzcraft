@@ -177,6 +177,7 @@ export interface VideoProps {
 // =============================================================================
 
 export interface ComponentStyles {
+  [x: string]: string;
   // Espacement
   margin?: CSSValue;
   padding?: CSSValue;

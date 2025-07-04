@@ -23,6 +23,13 @@ export {
   useNavigationInfo 
 } from './useSelectionNavigation';
 
+// Hooks Explorer Panel
+export {
+  useExplorerData,
+  useExplorerActions,
+  useExpansionState
+} from './useExplorerHooks';
+
 // Types centralisés
 export type { 
   SelectionLevel 

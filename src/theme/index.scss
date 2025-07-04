@@ -1,287 +1,242 @@
 // =============================================================================
-// THEME MODERNE - STYLE FIGMA/VSCODE 
+// THEME ENTRY POINT - BUZZCRAFT BUILDER (CORRIGÉ)
 // =============================================================================
 
-:root {
-  // =============================================================================
-  // COULEURS PRINCIPALE - INSPIRATION FIGMA/VSCODE
-  // =============================================================================
-  
-  // === BACKGROUNDS LIGHT ===
-  --bg-app: #f5f5f5;
-  --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f0f0f0;
-  --bg-quaternary: #e8e8e8;
-  
-  // === TEXTE LIGHT ===
-  --text-primary: #1a1a1a;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-  --text-quaternary: #d1d5db;
-  
-  // === BORDERS LIGHT ===
-  --border-color: #e5e7eb;
-  --border-color-strong: #d1d5db;
-  --border-color-subtle: #f3f4f6;
-  
-  // === INTERACTIVE LIGHT ===
-  --hover-bg: #f8f9fa;
-  --active-bg: #f1f3f4;
-  --selected-bg: #e8f0ff;
-  
-  // === BRAND COLORS ===
-  --primary: #0066cc;
-  --primary-hover: #0052a3;
-  --primary-bg: #e8f0ff;
-  
-  --success: #00a653;
-  --success-bg: #e8f5e8;
-  
-  --warning: #ff7b00;
-  --warning-bg: #fff4e8;
-  
-  --error: #f24822;
-  --error-bg: #ffe8e8;
-  
-  // =============================================================================
-  // LAYOUT & DIMENSIONS
-  // =============================================================================
-  --explorer-width: 240px;
-  --config-width: 280px;
-  --header-height: 44px;
-  
-  // =============================================================================
-  // TYPOGRAPHY - STYLE FIGMA
-  // =============================================================================
-  --font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 13px;
-  --text-lg: 14px;
-  --text-xl: 16px;
-  
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  
-  --line-height-tight: 1.25;
-  --line-height-normal: 1.4;
-  --line-height-relaxed: 1.6;
-  
-  // =============================================================================
-  // ESPACEMENTS - SYSTÈME 4PX
-  // =============================================================================
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  
-  // =============================================================================
-  // BORDURES & RAYONS - STYLE MODERNE
-  // =============================================================================
-  --border-width: 1px;
-  --border-radius: 6px;
-  --border-radius-sm: 4px;
-  --border-radius-lg: 8px;
-  --border-radius-xl: 12px;
-  
-  // =============================================================================
-  // OMBRES SUBTILES - STYLE FIGMA
-  // =============================================================================
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.04);
-  
-  // =============================================================================
-  // TRANSITIONS FLUIDES
-  // =============================================================================
-  --duration-fast: 120ms;
-  --duration-normal: 200ms;
-  --duration-slow: 300ms;
-  
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  
-  --transition: all var(--duration-normal) var(--ease);
-  --transition-fast: all var(--duration-fast) var(--ease);
+// === 1. RESET EN PREMIER ===
+@import './reset';
+
+// === 2. DESIGN TOKENS ===
+@import './tokens';
+
+// === 3. COMPONENT UTILITIES (SI EXISTANTS) ===
+// @import './components/form-controls';
+// @import './components/buttons';
+// @import './components/layout';
+
+// =============================================================================
+// 🎯 UTILITY CLASSES (TAILWIND-LIKE)
+// =============================================================================
+
+// === LAYOUT UTILITIES ===
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+
+// === GAP UTILITIES ===
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+// === GRID UTILITIES ===
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+// === SPACING UTILITIES ===
+.p-0 { padding: 0; }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+
+.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+.px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-5 { padding-left: var(--space-5); padding-right: var(--space-5); }
+.px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
+
+.py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+.py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+
+.m-0 { margin: 0; }
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+
+.ml-2 { margin-left: var(--space-2); }
+.ml-3 { margin-left: var(--space-3); }
+.ml-4 { margin-left: var(--space-4); }
+
+.mr-2 { margin-right: var(--space-2); }
+.mr-3 { margin-right: var(--space-3); }
+.mr-4 { margin-right: var(--space-4); }
+
+// === TEXT UTILITIES ===
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+
+.font-light { font-weight: var(--font-light); }
+.font-normal { font-weight: var(--font-normal); }
+.font-medium { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-disabled { color: var(--text-disabled); }
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+// === INTERACTIVE UTILITIES ===
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing; }
+
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+
+.transition-colors { transition: var(--transition-colors); }
+.transition-all { transition: var(--transition-all); }
+.transition-transform { transition: var(--transition-transform); }
+.transition-opacity { transition: var(--transition-opacity); }
+
+// === BORDER UTILITIES ===
+.border { border: 1px solid var(--border-primary); }
+.border-t { border-top: 1px solid var(--border-primary); }
+.border-r { border-right: 1px solid var(--border-primary); }
+.border-b { border-bottom: 1px solid var(--border-primary); }
+.border-l { border-left: 1px solid var(--border-primary); }
+
+.border-2 { border: 2px solid var(--border-primary); }
+.border-dashed { border-style: dashed; }
+
+.rounded { border-radius: var(--radius); }
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+// === BACKGROUND UTILITIES ===
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+
+// === SHADOW UTILITIES ===
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+// === POSITION UTILITIES ===
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+// === OVERFLOW UTILITIES ===
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+
+// === WIDTH & HEIGHT UTILITIES ===
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.min-h-0 { min-height: 0; }
+.min-w-0 { min-width: 0; }
+
+// === Z-INDEX UTILITIES ===
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+// =============================================================================
+// 🎯 BUILDER-SPECIFIC UTILITIES
+// =============================================================================
+
+// === ÉTATS DE SÉLECTION ===
+.is-selected-page { 
+  outline: 2px solid var(--selection-page);
+  outline-offset: 2px;
 }
 
-// =============================================================================
-// DARK MODE - STYLE VSCODE
-// =============================================================================
-[data-theme="dark"] {
-  // === BACKGROUNDS DARK ===
-  --bg-app: #1e1e1e;
-  --bg-primary: #252526;
-  --bg-secondary: #2d2d30;
-  --bg-tertiary: #3c3c3c;
-  --bg-quaternary: #4a4a4a;
-  
-  // === TEXTE DARK ===
-  --text-primary: #cccccc;
-  --text-secondary: #9d9d9d;
-  --text-tertiary: #6a6a6a;
-  --text-quaternary: #4a4a4a;
-  
-  // === BORDERS DARK ===
-  --border-color: #3c3c3c;
-  --border-color-strong: #4a4a4a;
-  --border-color-subtle: #2d2d30;
-  
-  // === INTERACTIVE DARK ===
-  --hover-bg: #2a2d2e;
-  --active-bg: #37373d;
-  --selected-bg: #094771;
-  
-  // === BRAND COLORS AJUSTÉS ===
-  --primary: #0e639c;
-  --primary-hover: #1177bb;
-  --primary-bg: #094771;
-  
-  // === OMBRES DARK ===
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4);
+.is-selected-module { 
+  outline: 2px solid var(--selection-module);
+  outline-offset: 2px;
 }
 
-// =============================================================================
-// LAYOUT GLOBAL - GRID PROPRE
-// =============================================================================
-.builder-grid {
-  display: grid;
-  grid-template-columns: var(--explorer-width) 1fr var(--config-width);
-  grid-template-rows: var(--header-height) 1fr;
-  height: 100vh;
-  background: var(--bg-app);
-  font-family: var(--font-family);
-  font-size: var(--text-base);
-  line-height: var(--line-height-normal);
-  color: var(--text-primary);
-  
-  // Chaque zone avec ses styles
-  .builder-header {
-    grid-column: 1 / -1;
-    background: var(--bg-primary);
-    border-bottom: var(--border-width) solid var(--border-color);
-  }
-  
-  .explorer-panel {
-    background: var(--bg-secondary);
-    border-right: var(--border-width) solid var(--border-color);
-  }
-  
-  .preview-area {
-    background: var(--bg-app);
-  }
-  
-  .config-panel {
-    background: var(--bg-secondary);
-    border-left: var(--border-width) solid var(--border-color);
-  }
+.is-selected-component { 
+  outline: 2px solid var(--selection-component);
+  outline-offset: 2px;
 }
 
-// =============================================================================
-// COMPOSANTS GLOBAUX
-// =============================================================================
-
-// Boutons style Figma
-.btn {
-  padding: var(--space-2) var(--space-3);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  cursor: pointer;
-  transition: var(--transition);
+// === ZONES DE DROP ===
+.drop-zone {
+  background: var(--drop-zone);
+  border: 2px dashed var(--border-primary);
+  border-radius: var(--radius-md);
   
-  &:hover {
-    background: var(--hover-bg);
-    border-color: var(--border-color-strong);
-  }
-  
-  &.btn-primary {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-    
-    &:hover {
-      background: var(--primary-hover);
-    }
+  &.is-active {
+    background: var(--drop-zone-active);
+    border-color: var(--color-primary-500);
   }
 }
 
-// Inputs style VSCode
-.input {
-  padding: var(--space-2) var(--space-3);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: var(--text-sm);
-  transition: var(--transition);
-  
-  &:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary-bg);
-  }
+// === ÉTATS INTERACTIFS ===
+.hover\:bg-hover:hover { background-color: var(--surface-hover); }
+.hover\:scale-105:hover { transform: scale(1.05); }
+.active\:scale-95:active { transform: scale(0.95); }
+
+// === ANIMATIONS BUILDER ===
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-// Scrollbars style VSCode
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--bg-tertiary) transparent;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@keyframes bounce {
+  0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: none; animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
 }
 
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-  border-radius: 4px;
-  
-  &:hover {
-    background: var(--bg-quaternary);
-  }
-}
-
-// =============================================================================
-// RESPONSIVE
-// =============================================================================
-@media (max-width: 768px) {
-  :root {
-    --explorer-width: 100%;
-    --config-width: 100%;
-    --header-height: 44px;
-  }
-  
-  .builder-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: var(--header-height) auto 1fr auto;
-  }
-}
-
-// =============================================================================
-// TRANSITIONS GLOBALES
-// =============================================================================
-* {
-  transition: var(--transition-fast);
-}
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-bounce { animation: bounce 1s infinite; }

@@ -1,0 +1,342 @@
+// =============================================================================
+// LAYOUT COMPONENTS - GRILLES ET CONTAINERS
+// =============================================================================
+
+// =============================================================================
+// 📦 CONTAINERS
+// =============================================================================
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  
+  &.sm { max-width: 640px; }
+  &.md { max-width: 768px; }
+  &.lg { max-width: 1024px; }
+  &.xl { max-width: 1280px; }
+  &.full { max-width: none; }
+}
+
+// =============================================================================
+// 🎛️ PANELS & SECTIONS
+// =============================================================================
+
+.panel {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  
+  .panel-header {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    
+    .panel-title {
+      font-size: var(--text-base);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+    
+    .panel-subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin: var(--space-1) 0 0 0;
+    }
+  }
+  
+  .panel-content {
+    padding: var(--space-4);
+  }
+  
+  .panel-footer {
+    padding: var(--space-4);
+    border-top: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+  }
+}
+
+// =============================================================================
+// 🏗️ CONFIG SECTIONS (BUILDER-SPECIFIC)
+// =============================================================================
+
+.config-section {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  
+  .section-header {
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-primary);
+    
+    .section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      
+      // Emoji icons for sections
+      &.layout::before { content: '📐'; }
+      &.style::before { content: '🎨'; }
+      &.content::before { content: '📝'; }
+      &.behavior::before { content: '⚡'; }
+      &.advanced::before { content: '🔧'; }
+    }
+  }
+  
+  .section-content {
+    padding: var(--space-4);
+  }
+  
+  // Compact version (no header)
+  &.compact {
+    .section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--border-primary);
+    }
+    
+    .section-content {
+      padding: var(--space-4);
+      padding-top: 0;
+    }
+  }
+}
+
+// =============================================================================
+// 🌳 TREE VIEW (EXPLORER PANEL)
+// =============================================================================
+
+.tree-view {
+  .tree-item {
+    position: relative;
+    
+    .tree-content {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: var(--transition-colors);
+      
+      &:hover {
+        background: var(--surface-hover);
+      }
+      
+      &.selected {
+        background: var(--surface-selected);
+        color: var(--color-primary-700);
+        font-weight: var(--font-medium);
+      }
+    }
+    
+    .tree-icon {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xs);
+      opacity: 0.7;
+    }
+    
+    .tree-label {
+      flex: 1;
+      font-size: var(--text-sm);
+      line-height: var(--leading-tight);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .tree-actions {
+      opacity: 0;
+      display: flex;
+      gap: var(--space-1);
+      transition: opacity var(--duration-fast) var(--ease-in-out);
+      
+      .btn {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        font-size: var(--text-xs);
+        border: none;
+        background: transparent;
+        
+        &:hover {
+          background: var(--surface-active);
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+    
+    &:hover .tree-actions {
+      opacity: 1;
+    }
+    
+    // Nested items
+    .tree-children {
+      margin-left: var(--space-5);
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: -12px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--border-primary);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// 📱 RESPONSIVE GRID (PREVIEW AREA)
+// =============================================================================
+
+.responsive-grid {
+  display: grid;
+  gap: var(--space-4);
+  width: 100%;
+  
+  // Dynamic column count based on CSS custom properties
+  grid-template-columns: repeat(var(--grid-cols, 1), 1fr);
+  
+  &.cols-1 { --grid-cols: 1; }
+  &.cols-2 { --grid-cols: 2; }
+  &.cols-3 { --grid-cols: 3; }
+  &.cols-4 { --grid-cols: 4; }
+  &.cols-5 { --grid-cols: 5; }
+  &.cols-6 { --grid-cols: 6; }
+  
+  .grid-item {
+    min-height: 40px;
+    
+    // Span support
+    &.span-1 { grid-column: span 1; }
+    &.span-2 { grid-column: span 2; }
+    &.span-3 { grid-column: span 3; }
+    &.span-4 { grid-column: span 4; }
+    &.span-5 { grid-column: span 5; }
+    &.span-6 { grid-column: span 6; }
+  }
+}
+
+// =============================================================================
+// 🎯 EMPTY STATES
+// =============================================================================
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  min-height: 200px;
+  
+  .empty-icon {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+    opacity: 0.3;
+  }
+  
+  .empty-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .empty-description {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+    max-width: 320px;
+    line-height: var(--leading-relaxed);
+  }
+  
+  .empty-action {
+    @extend .btn;
+    @extend .btn-primary;
+  }
+}
+
+// =============================================================================
+// 🔄 LOADING STATES
+// =============================================================================
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-primary);
+    border-top-color: var(--color-primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .loading-text {
+    margin-left: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =============================================================================
+// 🎨 SELECTION INDICATORS (BUILDER)
+// =============================================================================
+
+.selection-indicator {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    pointer-events: none;
+    transition: var(--transition-colors);
+  }
+  
+  &.selected-page::after {
+    border-color: var(--selection-page);
+    background: rgba(59, 130, 246, 0.05);
+  }
+  
+  &.selected-module::after {
+    border-color: var(--selection-module);
+    background: rgba(16, 185, 129, 0.05);
+  }
+  
+  &.selected-component::after {
+    border-color: var(--selection-component);
+    background: rgba(245, 158, 11, 0.05);
+  }
+}

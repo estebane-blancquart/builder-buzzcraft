@@ -1,162 +1,180 @@
 // =============================================================================
-// APP LAYOUT - CSS VARIABLES MINIMAL
+// APP LAYOUT - VERSION PROPRE AVEC DESIGN SYSTEM
 // =============================================================================
 
-// =============================================================================
-// GRID PRINCIPAL
-// =============================================================================
 .builder-grid {
   display: grid;
-  grid-template-columns: var(--explorer-width) 1fr var(--config-width);
+  grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
   grid-template-rows: var(--header-height) 1fr;
   height: 100vh;
-  overflow: hidden;
   background: var(--bg-app);
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  overflow: hidden;
   
-  // Support viewport units modernes
+  // Support viewport moderne
   @supports (height: 100dvh) {
     height: 100dvh;
   }
 }
 
 // =============================================================================
-// RESPONSIVE
+// ZONES DU LAYOUT
 // =============================================================================
-@media (min-width: 768px) and (max-width: 1023px) {
+
+.builder-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  z-index: var(--z-sticky);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.explorer-panel {
+  grid-column: 1;
+  grid-row: 2;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
+  overflow-y: auto;
+  
+  // Scrollbar moderne
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-300) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-300);
+    border-radius: var(--radius-full);
+    
+    &:hover {
+      background: var(--color-neutral-400);
+    }
+  }
+}
+
+.preview-area {
+  grid-column: 2;
+  grid-row: 2;
+  background: var(--bg-app);
+  overflow: hidden;
+  position: relative;
+}
+
+.config-panel {
+  grid-column: 3;
+  grid-row: 2;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-primary);
+  overflow-y: auto;
+  
+  // Même scrollbar que explorer
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-300) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-300);
+    border-radius: var(--radius-full);
+    
+    &:hover {
+      background: var(--color-neutral-400);
+    }
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@media (max-width: 1024px) {
   .builder-grid {
     grid-template-columns: 240px 1fr 280px;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .builder-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: var(--header-height) auto 1fr;
+    grid-template-rows: var(--header-height) 1fr;
+    
+    .explorer-panel,
+    .config-panel {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: var(--z-modal);
+      transform: translateX(-100%);
+      transition: transform var(--duration-normal) var(--ease-in-out);
+      grid-column: 1;
+      grid-row: 2;
+      
+      &.is-open {
+        transform: translateX(0);
+      }
+    }
+    
+    .config-panel {
+      transform: translateX(100%);
+      
+      &.is-open {
+        transform: translateX(0);
+      }
+    }
   }
 }
 
 // =============================================================================
-// PLACEMENT EXPLICITE DES PANNEAUX DANS LA GRILLE
+// ANIMATIONS & TRANSITIONS
 // =============================================================================
-.builder-header {
-  grid-column: 1 / -1;
-  grid-row: 1 / 2;
-}
-.explorer-panel {
-  grid-column: 1 / 2;
-  grid-row: 2 / -1;
-  min-width: var(--explorer-width);
-  max-width: var(--explorer-width);
-}
-.preview-area {
-  grid-column: 2 / 3;
-  grid-row: 2 / -1;
-}
-.config-panel {
-  grid-column: 3 / 4;
-  grid-row: 2 / -1;
-  min-width: var(--config-width);
-  max-width: var(--config-width);
+
+.builder-grid > * {
+  transition: var(--transition-all);
 }
 
-@media (max-width: 767px) {
-  .builder-header {
-    grid-column: 1 / -1;
-    grid-row: 1 / 2;
-  }
-  .explorer-panel {
-    grid-column: 1 / -1;
-    grid-row: 2 / 3;
-    min-width: 0;
-    max-width: 100vw;
-  }
-  .preview-area {
-    grid-column: 1 / -1;
-    grid-row: 3 / 4;
-  }
-  .config-panel {
-    grid-column: 1 / -1;
-    grid-row: 4 / 5;
-    min-width: 0;
-    max-width: 100vw;
-  }
-}
-
-// =============================================================================
-// ANIMATIONS SIMPLES
-// =============================================================================
-@keyframes slideIn {
+// Animation d'entrée douce
+@keyframes slideInLayout {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-.builder-grid > * {
-  animation: slideIn 0.3s ease-out;
+.builder-grid {
+  animation: slideInLayout 0.4s var(--ease-out);
 }
 
 // =============================================================================
 // REDUCED MOTION
 // =============================================================================
+
 @media (prefers-reduced-motion: reduce) {
+  .builder-grid,
   .builder-grid > * {
     animation: none;
+    transition: none;
   }
-}
-
-// =============================================================================
-// CORRECTION FLUSH ET SÉPARATEURS NETS
-// =============================================================================
-.builder-header {
-  min-height: 44px;
-  height: 44px;
-  padding: 0 var(--space-3);
-  background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
-  border-bottom: var(--border-width) solid var(--border-color);
-  box-shadow: none;
-}
-.explorer-panel {
-  border-right: var(--border-width) solid var(--border-color);
-  padding: 0;
-  min-width: var(--explorer-width);
-  max-width: var(--explorer-width);
-  background: var(--bg-secondary);
-}
-.preview-area {
-  padding: 0 !important;
-  margin: 0 !important;
-  background: var(--bg-primary);
-  min-width: 0;
-  box-shadow: none;
-}
-.config-panel {
-  border-left: var(--border-width) solid var(--border-color);
-  padding: 0;
-  min-width: var(--config-width);
-  max-width: var(--config-width);
-  background: var(--bg-secondary);
-}
-
-@media (max-width: 767px) {
-  .builder-header {
-    min-height: 40px;
-    height: 40px;
-    padding: 0 var(--space-2);
-  }
-  .explorer-panel, .config-panel {
-    min-width: 0;
-    max-width: 100vw;
-    border-right: none;
-    border-left: none;
-    border-bottom: var(--border-width) solid var(--border-color);
-  }
-  .preview-area {
-    min-width: 0;
-    padding: 0 !important;
+  
+  .explorer-panel,
+  .config-panel {
+    transition: none;
   }
 }
