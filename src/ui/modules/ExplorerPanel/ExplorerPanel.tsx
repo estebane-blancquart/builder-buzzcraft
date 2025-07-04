@@ -1,20 +1,21 @@
 // =============================================================================
-// EXPLORER PANEL - NAVIGATION PAGES/MODULES/COMPOSANTS (V2 EXEMPLAIRE)
+// EXPLORER PANEL - COMPOSANT PRINCIPAL DÉCOUPLÉ
 // =============================================================================
 import React, { useState, useCallback, useMemo } from 'react';
 import { useBuilder } from '../../../core/context/BuilderContext';
-import { createPageId, createUniqueName } from '../../../core/utils';
-import { pageActions, uiActions } from '../../../core/store';
-import { PageItem } from './PageItem';
+import { useSelection } from '../../../core/hooks';
+import { pageActions } from '../../../core/store/actions';
+import { selectAllPages } from '../../../core/store';
+import { generatePageId, generateDefaultPageName } from '../../../core/utils';
+import { PageItemContainer } from './containers/PageItemContainer';
 import './Explorer.scss';
 
-
 // =============================================================================
-// HOOKS CUSTOM
+// HOOKS MÉTIER (LOGIQUE SÉPARÉE)
 // =============================================================================
 
 /**
- * Hook pour gérer l'état d'expansion des éléments
+ * Hook pour la gestion de l'état d'expansion
  */
 function useExpansionState() {
   const [expandedPages, setExpandedPages] = useState<Set<string>>(new Set());
@@ -22,35 +23,26 @@ function useExpansionState() {
 
   const togglePageExpansion = useCallback((pageId: string) => {
     setExpandedPages(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(pageId)) {
-        newSet.delete(pageId);
+      const next = new Set(prev);
+      if (next.has(pageId)) {
+        next.delete(pageId);
       } else {
-        newSet.add(pageId);
+        next.add(pageId);
       }
-      return newSet;
+      return next;
     });
   }, []);
 
   const toggleModuleExpansion = useCallback((moduleId: string) => {
     setExpandedModules(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(moduleId)) {
-        newSet.delete(moduleId);
+      const next = new Set(prev);
+      if (next.has(moduleId)) {
+        next.delete(moduleId);
       } else {
-        newSet.add(moduleId);
+        next.add(moduleId);
       }
-      return newSet;
+      return next;
     });
-  }, []);
-
-  const collapseAll = useCallback(() => {
-    setExpandedPages(new Set());
-    setExpandedModules(new Set());
-  }, []);
-
-  const expandPage = useCallback((pageId: string) => {
-    setExpandedPages(prev => new Set([...prev, pageId]));
   }, []);
 
   return {
@@ -58,8 +50,6 @@ function useExpansionState() {
     expandedModules,
     togglePageExpansion,
     toggleModuleExpansion,
-    collapseAll,
-    expandPage
   };
 }
 
@@ -68,11 +58,12 @@ function useExpansionState() {
  */
 function useExplorerActions() {
   const { state, dispatch } = useBuilder();
+  const { actions } = useSelection();
   
   const createPage = useCallback(() => {
-    const newPageId = createPageId();
+    const newPageId = generatePageId();
     const existingPageNames = Object.values(state.entities.pages || {}).map(page => page.name);
-    const pageName = createUniqueName('Nouvelle page', existingPageNames);
+    const pageName = generateDefaultPageName(existingPageNames);
     
     const newPage = {
       id: newPageId,
@@ -84,20 +75,14 @@ function useExplorerActions() {
       updatedAt: Date.now()
     };
 
-    // Utiliser les action creators
     dispatch(pageActions.add(newPage));
-    dispatch(uiActions.selectPage(newPageId));
+    actions.selectPage(newPageId);
     
     return newPageId;
-  }, [state.entities.pages, dispatch]);
-
-  const selectPage = useCallback((pageId: string) => {
-    dispatch(uiActions.selectPage(pageId));
-  }, [dispatch]);
+  }, [state.entities.pages, dispatch, actions]);
 
   return {
     createPage,
-    selectPage
   };
 }
 
@@ -106,92 +91,95 @@ function useExplorerActions() {
  */
 function useExplorerData() {
   const { state } = useBuilder();
+  const { state: selection } = useSelection();
   
   return useMemo(() => {
-    const pages = state.entities.pages || {};
-    const pageIds = Object.keys(pages);
-    const pagesCount = pageIds.length;
-    const hasSelection = state.ui.selection.pageId;
-    const selectedPageId = hasSelection;
+    const pages = selectAllPages(state);
+    const pagesCount = pages.length;
+    const hasSelection = selection.pageId !== null;
+    const selectedPageId = selection.pageId;
     
     return {
-      pageIds,
+      pages,
       pagesCount,
       hasSelection,
       selectedPageId,
       hasPages: pagesCount > 0
     };
-  }, [state.entities.pages, state.ui.selection.pageId]);
+  }, [state, selection]);
 }
 
 // =============================================================================
 // COMPOSANT PRINCIPAL
 // =============================================================================
 export const ExplorerPanel: React.FC = () => {
-  // Hooks custom pour separation of concerns
+  // Hooks métier pour separation of concerns
   const explorerData = useExplorerData();
   const explorerActions = useExplorerActions();
   const expansionState = useExpansionState();
-  
+
   // =============================================================================
-  // HANDLERS OPTIMISÉS
+  // HANDLERS PRINCIPAUX
   // =============================================================================
-  
   const handleCreatePage = useCallback(() => {
     const newPageId = explorerActions.createPage();
-    expansionState.expandPage(newPageId);
-  }, [explorerActions.createPage, expansionState.expandPage]);
-
-  const handleSelectPage = useCallback((pageId: string) => {
-    explorerActions.selectPage(pageId);
-  }, [explorerActions.selectPage]);
+    // Auto-expand la nouvelle page
+    expansionState.togglePageExpansion(newPageId);
+  }, [explorerActions, expansionState]);
 
   // =============================================================================
-  // COMPOSANTS UI
+  // RENDER PRINCIPAL
   // =============================================================================
-  
-  const renderPagesList = useMemo(() => {
-    return (
-      <div className="pages-container" role="tree" aria-label="Pages du projet">
-        {explorerData.pageIds.map(pageId => (
-          <PageItem
-            key={pageId}
-            pageId={pageId}
-            isSelected={explorerData.selectedPageId === pageId}
-            isExpanded={expansionState.expandedPages.has(pageId)}
-            onSelect={handleSelectPage}
-            onToggleExpand={expansionState.togglePageExpansion}
-            expandedModules={expansionState.expandedModules}
-            onToggleModuleExpand={expansionState.toggleModuleExpansion}
-          />
-        ))}
-      </div>
-    );
-  }, [
-    explorerData.pageIds,
-    explorerData.selectedPageId,
-    expansionState.expandedPages,
-    expansionState.expandedModules,
-    handleSelectPage,
-    expansionState.togglePageExpansion,
-    expansionState.toggleModuleExpansion
-  ]);
-
-  // Retourner le JSX complet du composant
   return (
     <div className="explorer-panel">
-      <div className="pages-header-row">
-        <span className="pages-header-label">Pages</span>
-        <button
-          className="add-page-btn"
-          title="Ajouter une page"
+      {/* Header du panel */}
+      <div className="panel-header">
+        <div className="header-title">
+          <span className="header-icon">📁</span>
+          <span>Explorer</span>
+          <span className="header-count">({explorerData.pagesCount})</span>
+        </div>
+        
+        <button 
+          className="add-btn header-add-btn"
           onClick={handleCreatePage}
-          aria-label="Ajouter une page"
+          title="Ajouter une page"
         >
-          +
+          ➕
         </button>
       </div>
-      {renderPagesList}
+
+      {/* Contenu du panel */}
+      <div className="panel-content">
+        {explorerData.hasPages ? (
+          <div className="pages-list">
+            {explorerData.pages.map(page => (
+              <PageItemContainer
+                key={page.id}
+                pageId={page.id}
+                isExpanded={expansionState.expandedPages.has(page.id)}
+                expandedModules={expansionState.expandedModules}
+                onToggleExpand={expansionState.togglePageExpansion}
+                onToggleModuleExpand={expansionState.toggleModuleExpansion}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <div className="empty-icon">📄</div>
+            <div className="empty-title">Aucune page</div>
+            <div className="empty-message">
+              Créez votre première page pour commencer
+            </div>
+            <button 
+              className="empty-action-btn"
+              onClick={handleCreatePage}
+            >
+              ➕ Créer une page
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
